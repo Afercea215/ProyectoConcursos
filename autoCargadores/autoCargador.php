@@ -6,6 +6,9 @@
         if (file_exists($_SERVER['DOCUMENT_ROOT']."helper/".$class.".php")){
             include $_SERVER['DOCUMENT_ROOT']."helper/".$class.".php";
         }
+        if (file_exists($_SERVER['DOCUMENT_ROOT']."db/".$class.".php")){
+            include $_SERVER['DOCUMENT_ROOT']."db/".$class.".php";
+        }
     }
     
     spl_autoload_register('miAutocargador');
