@@ -1,0 +1,42 @@
+.c-sobremi{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+
+    &__contenido{
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        align-content: space-around;
+        width: 80%;
+
+        &__texto{
+            width: 38%;
+            &__lista{
+                margin-top: 10%;
+                font-weight: bold;
+                text-align: left;
+                list-style-type: square ;
+                list-style-position: inside;
+                & li{
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        &__img{
+            height: 600px;
+            width: 700px;
+            border-radius: $border-1+px;
+            object-fit: cover;
+        }
+    }
+
+    &__botones{
+        display: flex;
+        justify-content: space-evenly;
+        width: 25%;
+    }
+}
+

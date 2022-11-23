@@ -1,0 +1,50 @@
+.c-header{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-princip;
+    min-height: 75px;
+    padding: 0px 25px;
+
+    &__menu{
+        text-align: center;
+        width: 15%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    &__menu, a{
+        color: $color-sec;
+    }
+
+    &__logo{
+        max-width: 95px;
+    }
+
+    &__indentificacion{
+       display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 15%; 
+
+        &__logo-usuario{
+            display: flex;
+            align-items: center;
+            background-color: $color-sec;
+            border-radius: $border-1+px;
+            padding: 3px 5px;
+
+            & img{
+                border-radius: 50%;
+                border: 2px solid $color-terc;
+                max-width: 35px;
+            }
+            & span{
+                font-size: 20px;
+                color: $color-terc;
+            }
+        }
+    }
+}

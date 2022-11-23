@@ -1,0 +1,36 @@
+.c-servicios{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__paneles{
+        padding-top: 2%;
+        width: 70%;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: space-around;
+        &__servicio{
+            height: 130px;
+            margin: 2% 0;
+            padding: 3%;
+            border-radius: $border-1+px;
+            width: 40%;
+            align-items: center;
+            text-align: center;
+            display: grid;
+            grid-template-areas: 'img titulo'
+                                 'img texto';
+            & h3{
+                grid-area: titulo;
+            }
+            & p{
+                grid-area: texto;
+                font-size: 15px;
+            }
+            & img{
+                width: 100px;
+                grid-area: img;
+            }
+        }
+    }
+}

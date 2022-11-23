@@ -1,18 +1,35 @@
 <?php
 class Login
 {
-    public static function Identifica(string $usuario,string $contrasena,bool $recuerdame)
-    {
-        
+    //funcion verificar si es admin
+    public static function usuarioEsAdmin(){
+        if (sesion::leer('rol')=="admin") {
+            return true;
+        } else{
+            return false;
+        }
     }
 
-    private static function ExisteUsuario(string $usuario,string $contrasena=null)
+    //es el login en si, comprueba si existe y crea el la sesion con los datos
+    public static function identifica(string $usuario,string $contrasena, bool $recuerdame)
     {
-        
+        $participante = RepositorioParticipante::getByNombreContra($usuario,$contrasena);  
+
+        if ($participante) {
+            Sesion::iniciaSesion($participante,$recuerdame);
+            return $participante;
+        }else{
+            return false;
+        }
     }
 
-    public static function UsuarioEstaLogueado()
+    private static function existeUsuario(string $usuario,string $contrasena=null)
     {
-        
+        return RepositorioParticipante::getByNombreContra($usuario, $contrasena)!=null;
+    }
+
+    public static function usuarioEstaLogueado()
+    {
+        return sesion::existe('user');
     }
 }

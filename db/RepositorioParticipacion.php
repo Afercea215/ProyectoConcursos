@@ -2,7 +2,7 @@
 class RepositorioParticipacion{
     public static $nomTabla="participacion";
 
-    public static function getParticipacionById($id){
+    public static function getById($id){
         try {
             $obj = GBD::findById(RepositorioParticipacion::$nomTabla,$id);
             return Participacion::arrayToParticipacion($obj);    //code...
@@ -12,7 +12,7 @@ class RepositorioParticipacion{
         
     }
 
-    public static function addParticipacion(Participacion $participacion){
+    public static function add(Participacion $participacion){
         try {
             $array = $participacion->ParticipacionToArray(); 
              GBD::add(RepositorioParticipacion::$nomTabla, $array);
@@ -23,7 +23,7 @@ class RepositorioParticipacion{
     }
     
 
-    public static function updateParticipacion(Participacion $participacion){
+    public static function update(Participacion $participacion){
         try {
             $array = $participacion->participacionToArray(); 
              GBD::update(RepositorioParticipacion::$nomTabla, $array);
@@ -33,16 +33,16 @@ class RepositorioParticipacion{
         
     }
 
-        public static function deleteParticipacion(Participacion $participacion){
+        public static function delete($id){
         try {
-             GBD::delete(RepositorioParticipacion::$nomTabla, $participacion->getId());
+             GBD::delete(RepositorioParticipacion::$nomTabla, $id);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
         
     }
 
-    public static function getParticipacions(){
+    public static function getAll(){
         $participacions = GBD::getAll("participacion");
         for ($i=0; $i <sizeof($participacions); $i++) { 
             $participacionsObj[]=Participacion::arrayToParticipacion($participacions[$i]);

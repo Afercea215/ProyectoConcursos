@@ -5,14 +5,14 @@
         $valida->Requerido('usuario');
         $valida->Requerido('contrasena');
         //Comprobamos validacion
-        if($valida->ValidacionPasada())
+        $recuerdame =isset($_POST['recuerdame'])?$_POST['recuerdame']:false;
+        $participante = Login::Identifica($_POST['usuario'],$_POST['contrasena'],$recuerdame);
+        if($valida->ValidacionPasada() && $participante)
         {
-            if(Login::Identifica($_POST['usuario'],$_POST['contrasena'],
-            isset($_POST['recuerdame'])?$_POST['recuerdame']:false))
-            {
-                $url=$_GET['returnurl'];
-                header("location:?menu=".$url);
-            }
+            Sesion::iniciaSesion($participante,$recuerdame);
+            //si hay pagina anterior te lleva a eso y si no a inicio
+            $url=(isset($_GET['returnurl']))?$_GET['returnurl']:"inicio";
+            header("location:?menu=".$url);
         }
     }
 ?>
@@ -21,11 +21,11 @@
         <form action='' method='post' novalidate>
             <h2 class='text-center'>Identificate</h2>
             <div class='form-group'>
-                <input type='text' class='form-control' name='usuario' placeholder='Usuario' required='required'>
+                <input type='text' class='form-control <?php $valida->imprimeClaseInputError('usuario')?>' name='usuario' placeholder='Usuario' required='required'>
                 <?= $valida->ImprimirError('usuario') ?>
             </div>
             <div class='form-group'>
-                <input type='password' class='form-control' name='contrasena' placeholder='Contraseña'
+                <input type='password' class='form-control <?php $valida->imprimeClaseInputError('contrasena')?>' name='contrasena' placeholder='Contraseña'
                     required='required'>
                 <?= $valida->ImprimirError('contrasena') ?>
             </div>
@@ -37,6 +37,6 @@
                     <input type='checkbox' name='recuerdame'> Recuerdame</label>
             </div>
         </form>
-        <p class='text-center'><a href='#'>Crear una Cuenta</a></p>
+        <p class='text-center'><a href='./?menu=registro'>Crear una Cuenta</a></p>
     </div>
 </div>

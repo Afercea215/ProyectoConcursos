@@ -2,7 +2,7 @@
 class RepositorioBanda{
     public static $nomTabla="banda";
 
-    public static function getBandaById($id){
+    public static function getById($id){
         try {
             $obj = GBD::findById(RepositorioBanda::$nomTabla,$id);
             return Banda::arrayToBanda($obj);    //code...
@@ -12,7 +12,7 @@ class RepositorioBanda{
         
     }
 
-    public static function addBanda(Banda $banda){
+    public static function add(Banda $banda){
         try {
             $array = $banda->bandaToArray(); 
              GBD::add(RepositorioBanda::$nomTabla, $array);
@@ -22,7 +22,7 @@ class RepositorioBanda{
         
     }
 
-    public static function updateBanda(Banda $banda){
+    public static function update(Banda $banda){
         try {
             $array = $banda->bandaToArray(); 
              GBD::update(RepositorioBanda::$nomTabla, $array);
@@ -32,16 +32,16 @@ class RepositorioBanda{
         
     }
 
-        public static function deleteBanda(Banda $banda){
+        public static function delete($id){
         try {
-             GBD::delete(RepositorioBanda::$nomTabla, $banda->getId());
+             GBD::delete(RepositorioBanda::$nomTabla, $id);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
         
     }
 
-    public static function getBandas(){
+    public static function getAll(){
         $bandas = GBD::getAll("banda");
         for ($i=0; $i <sizeof($bandas); $i++) { 
             $bandasObj[]=Banda::arrayToBanda($bandas[$i]);

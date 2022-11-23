@@ -2,7 +2,43 @@
 class RepositorioParticipante{
     public static $nomTabla="participante";
 
-    public static function getParticipanteById($id){
+    public static function getByNombreContra($nombre, $contrasena){
+        try {
+            
+            $sql="select *, ST_X(localizacion) as x,  ST_Y(localizacion) as y from ".RepositorioParticipante::$nomTabla." where nombre like '".$nombre."' and contrasena like '".$contrasena."'";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            if ($datos) {
+                return Participante::arrayToParticipante($datos);
+            }else{
+                return false;
+            }
+            
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    /* public static function getRol($id, $contrasena){
+        try {
+            
+            $sql="select * from ".RepositorioParticipante::$nomTabla." where identificador like '".$identificador."' and contrasena like '".$contrasena."'";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+
+            if (!$datos) {
+                return false;
+            } else{
+                return true;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    } */
+
+    public static function getById($id){
         try {
             /*$obj = GBD::findById(RepositorioParticipante::$nomTabla,$id);
             return Participante::arrayToParticipante($obj);    //code... */
@@ -22,26 +58,74 @@ class RepositorioParticipante{
         }
     }
 
-    public static function addParticipante(Participante $participante){
+    public static function getByNombre(string $nombre){
+        try {
+            $sql="select *, ST_X(localizacion) as x,  ST_Y(localizacion) as y from ".RepositorioParticipante::$nomTabla." where nombre like '".$nombre."'";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            if ($datos) {
+                return Participante::arrayToParticipante($datos);
+            }else{
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function getImagenByNombre(string $nombre){
+        try {
+            $sql="select imagen from ".RepositorioParticipante::$nomTabla." where nombre like '".$nombre."'";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            if ($datos) {
+                return $datos['imagen'];
+            }else{
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function getByCorreo(string $correo){
+        try {
+            $sql="select *, ST_X(localizacion) as x,  ST_Y(localizacion) as y from ".RepositorioParticipante::$nomTabla." where correo like '".$correo."'";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            if ($datos) {
+                return Participante::arrayToParticipante($datos);
+            }else{
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function add(Participante $participante){
         try {
             /* ST_GeomFromText() */
             $array = $participante->ParticipanteToArray();
             //$localizacion = $array['localizacion']->getX()." ".$array['localizacion']->getY();
             //$array['localizacion']="GeomFromText(".$array['localizacion'].")";
             $loca = $array['localizacion']."";
+            $admin = $array['admin']==false?"false":"true";
             GBD::getConexion()->query('INSERT INTO PARTICIPANTE (identificador, admin, contrasena, correo, localizacion, imagen, nombre)
-                                        VALUES ("'.$array['identificador'].'", '.$array['admin'].', "'.$array['contrasena'].'", "'.$array['correo'].'", '.$loca.', "'.$array['imagen'].'", "'.$array['nombre'].'")');
+                                        VALUES ("'.$array['identificador'].'",'.$admin.', "'.$array['contrasena'].'", "'.$array['correo'].'", '.$loca.', "'.$array['imagen'].'", "'.$array['nombre'].'")');
     
             //GBD::add(RepositorioParticipante::$nomTabla, $array);
 
         } catch (Exception $e) {
             echo $e->getMessage();
-        }
-        
+        }  
     }
     
 
-    public static function updateParticipante(Participante $participante){
+    public static function update(Participante $participante){
         try {
             $valores = $participante->participanteToArray(); 
             //GBD::update(RepositorioParticipante::$nomTabla, $array);
@@ -54,16 +138,33 @@ class RepositorioParticipante{
         
     }
 
-        public static function deleteParticipante(Participante $participante){
+        public static function delete($id){
         try {
-             GBD::delete(RepositorioParticipante::$nomTabla, $participante->getId());
+             GBD::delete(RepositorioParticipante::$nomTabla, $id);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
         
     }
 
-    public static function getParticipantes(){
+    public static function getAllArray(){
+        $sql="select id, identificador, admin, correo, contrasena, contrasena, imagen, nombre, ST_X(localizacion) as x,  ST_Y(localizacion) as y from ".RepositorioParticipante::$nomTabla;
+        $consulta=GBD::getConexion()->prepare($sql);
+        $consulta->execute();
+        $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
+
+    /*     for ($i=0; $i <sizeof($datos) ; $i++) { 
+            unset($datos[$i]['localizacion']);
+        } */
+        
+
+        /* for ($i=0; $i <sizeof($datos); $i++) { 
+            $participantesObj[]=Participante::arrayToParticipante($datos[$i]);
+        } */
+        return $datos;
+    }
+
+    public static function getAll(){
         $sql="select *, ST_X(localizacion) as x,  ST_Y(localizacion) as y from ".RepositorioParticipante::$nomTabla;
         $consulta=GBD::getConexion()->prepare($sql);
         $consulta->execute([]);

@@ -82,6 +82,30 @@ class Validacion
         return true;
     }
 
+    public function imprimeClaseInputError($campo){
+        if (isset($errores[$campo])) {
+            echo "errorInput";       
+        }
+    }
+
+    public function validaEmail($campo, $valor){
+        if ($this->Email($campo)) {
+            if (RepositorioParticipante::getByCorreo($valor)) {
+                $this->errores[$campo]="Email en uso, use otro correo electronico.";
+            };
+        };
+    }
+
+    public function validaNombreUsuario($campo,$valor){
+        if ($this->Requerido($campo)) {
+            if (RepositorioParticipante::getByNombre($valor)) {
+                $this->errores[$campo]="Nombre de usuario en uso, use otro.";
+            };
+        }else{
+            return false;
+        }
+    }
+
     public function Dni($campo)
     {
         $letras="TRWAGMYFPDXBNJZSQVHLCKE";
@@ -180,4 +204,7 @@ class Validacion
         isset($_POST[$campo]) && $_POST[$campo]==$valor?'checked':'';
     }
      
+    public function addError(string $campo, string $mensaje){
+        $this->errores[$campo]=$mensaje;
+    }
 }

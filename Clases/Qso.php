@@ -7,7 +7,7 @@ class Qso{
     private $modo_id;
     private $participacion_id;
 
-    public function __construct(int $id, DateTime $fecha, bool $valido, Banda $banda_id,Modo $modo_id,Participacion $participacion_id)
+    public function __construct(int $id, string $fecha, bool $valido, string $banda_id,string $modo_id,string $participacion_id)
     {
         $this->setId($id);
         $this->setFecha($fecha);

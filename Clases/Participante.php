@@ -9,7 +9,7 @@ class Participante{
     private $imagen;
     private $nombre;
 
-    public function __construct(int $id, string $identificador, string $contrasena, bool $admin, string $correo, Point $localizacion, string $imagen, string $nombre="")
+    public function __construct(int $id, string $identificador, string $contrasena, bool $admin, string $correo, Point $localizacion, string $nombre, string $imagen='')
     {
         $this->setId($id);
         $this->setIdentificador($identificador);
@@ -22,17 +22,21 @@ class Participante{
 
     }
     
-    public static function arrayToParticipante(array $array): Participante{
-        $id=$array['id'];
-        $identificador=$array['identificador']; 
-        $contrasena=$array['contrasena']; 
-        $admin=$array['admin']; 
-        $correo=$array['correo']; 
-        $localizacion=new Point($array['x'], $array['y']); 
-        $imagen=$array['imagen']; 
-        $nombre=$array['nombre']; 
+    public static function arrayToParticipante(array $array, $incluyeTabla=false): Participante{
+        $tabla="";
+        if ($incluyeTabla) {
+            $tabla=RepositorioParticipante::$nomTabla.".";
+        }
+        $id=$array[$tabla.'id'];
+        $identificador=$array[$tabla.'identificador']; 
+        $contrasena=$array[$tabla.'contrasena']; 
+        $admin=$array[$tabla.'admin']; 
+        $correo=$array[$tabla.'correo']; 
+        $localizacion=new Point($tabla.$array['x'], $tabla.$array['y']); 
+        $imagen=$array[$tabla.'imagen']; 
+        $nombre=$array[$tabla.'nombre']; 
         
-        return new Participante($id, $identificador, $contrasena, $admin, $correo, $localizacion, $imagen, $nombre);
+        return new Participante($id, $identificador, $contrasena, $admin, $correo, $localizacion, $nombre, $imagen);
     }
 
     public function participanteToArray (){

@@ -2,7 +2,7 @@
 class RepositorioDiploma{
     public static $nomTabla="diploma";
 
-    public static function getDiplomaById($id){
+    public static function getById($id){
         try {
             $obj = GBD::findById(RepositorioDiploma::$nomTabla,$id);
             return Diploma::arrayToDiploma($obj);    //code...
@@ -12,7 +12,7 @@ class RepositorioDiploma{
         
     }
 
-    public static function addDiploma(Diploma $diploma){
+    public static function add(Diploma $diploma){
         try {
             $array = $diploma->diplomaToArray(); 
              GBD::add(RepositorioDiploma::$nomTabla, $array);
@@ -23,7 +23,7 @@ class RepositorioDiploma{
     }
     
 
-    public static function updateDiploma(Diploma $diploma){
+    public static function update(Diploma $diploma){
         try {
             $array = $diploma->diplomaToArray(); 
              GBD::update(RepositorioDiploma::$nomTabla, $array);
@@ -33,16 +33,16 @@ class RepositorioDiploma{
         
     }
 
-        public static function deleteDiploma(Diploma $diploma){
+        public static function delete($id){
         try {
-             GBD::delete(RepositorioDiploma::$nomTabla, $diploma->getId());
+             GBD::delete(RepositorioDiploma::$nomTabla, $id);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
         
     }
 
-    public static function getDiplomas(){
+    public static function getAll(){
         $diplomas = GBD::getAll("diploma");
         for ($i=0; $i <sizeof($diplomas); $i++) { 
             $diplomasObj[]=Diploma::arrayToDiploma($diplomas[$i]);

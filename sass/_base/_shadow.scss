@@ -1,0 +1,27 @@
+@mixin shadows($profundidad){
+    @if $profundidad == 0 {
+        box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.13);
+    }
+    @if $profundidad == 1 {
+        box-shadow: 0 4px 6px hsla(0, 0%, 0%, 0.13);
+    }
+    @if $profundidad == 2 {
+        box-shadow: 0 5px 15px hsla(0, 0%, 0%, 0.13);
+    }
+    @if $profundidad == 3 {
+        box-shadow: 0 10px 24px hsla(0, 0%, 0%, 0.13);
+    }
+    @if $profundidad == 4 {
+        box-shadow: 0 15px 35px hsla(0, 0%, 0%, 0.13);
+    }
+}
+
+@for $i from 0 to 5{
+    .g-shadow--#{$i}{
+        @include shadows($i);
+    }
+}
+
+/* @import "./_componentes/paneles";
+@import "reset";
+@import "normalice"; */

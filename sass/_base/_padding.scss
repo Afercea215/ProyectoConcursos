@@ -1,0 +1,17 @@
+@for $i from 0 to 5{
+    .g-pad-top--#{$i}{
+        padding-top: $i*10px;
+    }
+    .g-pad-left--#{$i}{
+        padding-left: $i*10px;
+    }
+    .g-pad-right--#{$i}{
+        padding-right: $i*10px;
+    }
+    .g-pad-bottom--#{$i}{
+        padding-bottom: $i*10px;
+    }
+    .g-pad--#{$i}{
+        padding: $i*10px $i*10px $i*10px $i*10px;
+    }
+}

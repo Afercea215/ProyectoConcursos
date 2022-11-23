@@ -1,0 +1,28 @@
+body{
+    box-sizing: border-box;
+    font-family: 'inter';
+    font-size: 20px;
+    color: $color-princip;
+}
+
+a{
+    text-decoration: none;
+}
+
+h1{
+    font-size: 60px;
+    color: $color-sec;
+    font-weight: bold;
+}
+
+h2{
+    font-size: 20px;
+    color: $color-princip;
+    font-weight: bold;
+}
+
+h3{
+    font-size: 20px;
+    color: $color-sec;
+    font-weight: bold;
+}

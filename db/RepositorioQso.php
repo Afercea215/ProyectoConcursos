@@ -2,7 +2,7 @@
 class RepositorioQso{
     public static $nomTabla="qso";
 
-    public static function getQsoById($id){
+    public static function getById($id){
         try {
             $obj = GBD::findById(RepositorioQso::$nomTabla,$id);
             return Qso::arrayToQso($obj);    //code...
@@ -12,7 +12,7 @@ class RepositorioQso{
         
     }
 
-    public static function addQso(Qso $qso){
+    public static function add(Qso $qso){
         try {
             $array = $qso->QsoToArray(); 
              GBD::add(RepositorioQso::$nomTabla, $array);
@@ -23,7 +23,7 @@ class RepositorioQso{
     }
     
 
-    public static function updateQso(Qso $qso){
+    public static function update(Qso $qso){
         try {
             $array = $qso->qsoToArray(); 
              GBD::update(RepositorioQso::$nomTabla, $array);
@@ -33,16 +33,16 @@ class RepositorioQso{
         
     }
 
-        public static function deleteQso(Qso $qso){
+        public static function delete($id){
         try {
-             GBD::delete(RepositorioQso::$nomTabla, $qso->getId());
+             GBD::delete(RepositorioQso::$nomTabla, $id);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
         
     }
 
-    public static function getQsos(){
+    public static function getAll(){
         $qsos = GBD::getAll("qso");
         for ($i=0; $i <sizeof($qsos); $i++) { 
             $qsosObj[]=Qso::arrayToQso($qsos[$i]);

@@ -160,6 +160,10 @@ class GBD
     public static function add(string $tabla, array $valores)
     {
         unset($valores['id']);
+        ////////////////////////////////
+        for ($i=0; $i <sizeof($valores); $i++) { 
+            $valores[$i]=GBD::compruebaValorVacio($valores[$i]);
+        }
         $campos=implode(",",array_keys($valores));
         $parametros=str_repeat("?,",count($valores));
         $parametros=rtrim($parametros,",");
