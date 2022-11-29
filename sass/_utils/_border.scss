@@ -1,2 +1,6 @@
 $border-0:7;
 $border-1:14;
+
+@function getBorder($num){
+    @return $num*7px;
+}

@@ -1,0 +1,54 @@
+.c-tabla{
+    border-collapse:separate; 
+    background: $color-princip;
+
+    border: 2px solid $color-princip;
+    border-radius: getBorder(1);
+    
+    & thead{
+        height: 50px;
+        width: 100%;
+        
+        color: $color-sec;
+        background-color: $color-princip;
+        font-weight: bold;
+
+        & tr th{
+            vertical-align: middle;
+            text-align: center;
+            min-width: 50px;
+            overflow: hidden;
+            
+            min-width: 150px;
+        }
+    }
+
+    & tbody{
+
+        & tr{
+        
+            &:nth-child(odd){
+                background-color: $color-sec;
+            }
+            &:nth-child(even){
+                background-color: rgb(225, 225, 225);
+            }
+
+            & td{
+                padding: 10px;
+
+                vertical-align: middle;
+                text-align: center;
+        
+                border: 1px solid $color-princip;
+                height: 30px;
+        
+                min-height: 50px;
+        
+                & img{
+                    max-height: 100%;
+                }
+            }
+        }
+    } 
+}

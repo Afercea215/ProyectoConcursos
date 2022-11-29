@@ -22,11 +22,11 @@ class Login
             return false;
         }
     }
-
+/* 
     private static function existeUsuario(string $usuario,string $contrasena=null)
     {
         return RepositorioParticipante::getByNombreContra($usuario, $contrasena)!=null;
-    }
+    } */
 
     public static function usuarioEstaLogueado()
     {

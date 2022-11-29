@@ -1,33 +1,35 @@
 .c-header{
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-between;
-    align-items: center;
+    @include flexRow;
     background-color: $color-princip;
     min-height: 75px;
-    padding: 0px 25px;
+    width: 100%;
+
+    position: relative;
+    top: 0px;
 
     &__menu{
         text-align: center;
         width: 15%;
         display: flex;
         justify-content: space-around;
-    }
-
-    &__menu, a{
         color: $color-sec;
+
+        & a:visited{
+            color: inherit;
+        }
     }
 
     &__logo{
         max-width: 95px;
+        margin-left: 2%;
     }
 
     &__indentificacion{
-       display: flex;
+        display: flex;
         align-items: center;
         justify-content: space-evenly;
-        width: 15%; 
+        width: 25%; 
+        margin-right: 1%;
 
         &__logo-usuario{
             display: flex;

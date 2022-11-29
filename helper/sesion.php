@@ -35,6 +35,11 @@ class Sesion
         //Sesion::escribir('identificador',$identificador);
     }
 
+    public static function esAdmin()
+    {
+        return Sesion::leer('rol');
+    }
+
     public static function existe(string $clave)
     {
         return isset($_SESSION[$clave]);
@@ -55,6 +60,9 @@ class Sesion
         session_destroy();
         if (isset($_COOKIE['usuario'])) {
             setcookie('usuario', null, -1, '/'); 
+        }
+        if (isset($_COOKIE['recuerdame'])) {
+            setcookie('recuerdame', null, -1, '/'); 
         }
         if (isset($_COOKIE['contrasena'])) {
             setcookie('contrasena', null, -1, '/'); 

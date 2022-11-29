@@ -16,3 +16,7 @@
     
     }
 }
+
+@function getMargin($num){
+    @return $num*15px;
+}

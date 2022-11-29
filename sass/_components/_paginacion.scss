@@ -1,0 +1,26 @@
+.c-paginacion{
+    min-width: 100px;
+    display: flex;
+
+    margin-top: 2%;
+
+    &__actual{
+        color: $color-sec;
+        background-color: $color-princip;
+        padding: 5% 15%;
+        border-radius: getBorder(2);
+    }
+    &__noactual{
+        color: $color-princip;
+        background-color: $color-sec;
+        padding: 5% 15%;
+        border-radius: getBorder(2);
+
+        &:disabled{
+            color: $color-princip;
+            background-color: $color-sec;
+            padding: 5% 15%;
+            border-radius: getBorder(2);
+        }
+    }
+}

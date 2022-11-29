@@ -106,6 +106,16 @@ class Validacion
         }
     }
 
+    public function validaIdentificador($campo,$valor){
+        if ($this->Requerido($campo)) {
+            if (RepositorioParticipante::getByIdentificador($valor)) {
+                $this->errores[$campo]="Identificador en uso, use otro.";
+            };
+        }else{
+            return false;
+        }
+    }
+
     public function Dni($campo)
     {
         $letras="TRWAGMYFPDXBNJZSQVHLCKE";

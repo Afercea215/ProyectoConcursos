@@ -1,0 +1,191 @@
+@mixin form(){
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+
+    color: $color-sec;
+    background-color: $color-princip;
+    border-radius: $border-1+px;
+    
+    padding-right: 4%;
+    padding-left: 4%;
+    
+    min-height: 200px;
+    min-width: 300px;
+}
+
+.c-form{
+    @include form;
+
+    &__titulo{
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        
+        color: $color-sec;
+        margin-bottom: 3%;
+        & hr{
+            width: 100%;
+            color: $color-sec;
+            border: 1px solid rgba($color: $color-sec, $alpha: 0.4);
+
+            margin-top: -2%;
+        }
+
+        & h2{
+            color: $color-sec;
+            margin: 0%;
+        }
+    }
+
+    &__componente{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 50%;
+        max-width: 50%;
+
+        margin: 1% 0;
+
+        &--imagen{
+            display: flex;
+            flex-direction: row;
+            flex: 50%;
+            max-width: 50%;
+            margin: 1% 0;
+            flex-wrap: wrap;
+            align-content: center;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        &--localizacion{
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+    }
+
+    &__footer{
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        
+        color: $color-sec;
+        margin-top: 3%;
+        margin-bottom:1%;
+        & hr{
+            width: 100%;
+            color: $color-sec;
+            border: 1px solid rgba($color: $color-sec, $alpha: 0.4);
+
+            margin-bottom: -5%;
+        }
+    }
+
+    &--edicion{
+        @include form;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 40%;
+
+        padding-top: 2%;
+        padding-bottom: 2%;
+        box-shadow: getShadow(3);
+        margin-top: 2%;
+
+        & span{
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            z-index: 200;
+
+            & img{
+                width: 30px;
+            } 
+        }
+        & img{
+            padding-top: 5px;
+            width: 50px;
+        }
+        & label{
+            margin-top: 2%;
+            margin-bottom: 0.5%;
+            font-weight: bold;
+        }
+        & p{
+            margin-top: 2%;
+        }
+        & input{
+            border-radius: $border-0+px;
+            height: 30px;
+            border: none;
+            margin: 0.5% 0;
+            
+            &[type=file]{
+                max-width: 80%;
+            }
+        }
+    }
+
+    & img{
+        padding-top: 5px;
+        width: 50px;
+    }
+
+    & h2{
+        font-size: 135%;
+        color: $color-sec;
+    }
+    & input{
+        padding: 1% 4%;
+        border-radius: $border-0+px;
+        height: 30px;
+        border: none;
+        margin: 2% 0;
+    }
+    & div{
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        justify-content: space-between;
+        width: 40%;
+    }
+    & p{
+        margin-top: 2%;
+    }
+    & a{
+        margin-top: 2%;
+        font-size: 80%;
+        text-decoration: underline;
+    }
+    & h3{
+        margin-top: 5%;
+        font-weight: 800;
+    }
+    a:visited{
+        color: inherit;
+    }
+}
+.errorInput{
+    border-color: red;
+}
+
+.error_mensaje{
+    color: red;
+    font-size: 80%;
+    margin-bottom: 3%;
+}

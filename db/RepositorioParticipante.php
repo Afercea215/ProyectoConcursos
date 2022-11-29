@@ -74,6 +74,22 @@ class RepositorioParticipante{
         }  
     }
 
+    public static function getByIdentificador(string $identificador){
+        try {
+            $sql="select *, ST_X(localizacion) as x,  ST_Y(localizacion) as y from ".RepositorioParticipante::$nomTabla." where identificador like '".$identificador."'";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            if ($datos) {
+                return Participante::arrayToParticipante($datos);
+            }else{
+                return false;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
     public static function getImagenByNombre(string $nombre){
         try {
             $sql="select imagen from ".RepositorioParticipante::$nomTabla." where nombre like '".$nombre."'";
@@ -148,7 +164,7 @@ class RepositorioParticipante{
     }
 
     public static function getAllArray(){
-        $sql="select id, identificador, admin, correo, contrasena, contrasena, imagen, nombre, ST_X(localizacion) as x,  ST_Y(localizacion) as y from ".RepositorioParticipante::$nomTabla;
+        $sql="select id, nombre, identificador, admin, correo, imagen, concat('X: ',ST_X(localizacion),' - Y: ',ST_Y(localizacion)) as localizacion from ".RepositorioParticipante::$nomTabla;
         $consulta=GBD::getConexion()->prepare($sql);
         $consulta->execute();
         $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);

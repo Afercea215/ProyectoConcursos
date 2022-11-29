@@ -1,4 +1,4 @@
-@for $i from 0 to 5{
+@for $i from 0 to 10{
     .g-pad-top--#{$i}{
         padding-top: $i*10px;
     }
@@ -14,4 +14,7 @@
     .g-pad--#{$i}{
         padding: $i*10px $i*10px $i*10px $i*10px;
     }
+}
+@function getPadding($num){
+    @return $num*10px;
 }

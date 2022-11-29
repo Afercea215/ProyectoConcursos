@@ -3,3 +3,7 @@
         font-size: $i*5px;
     }
 }
+@function getFontSize($num){
+    @return $num*5px;
+}
+

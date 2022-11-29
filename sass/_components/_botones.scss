@@ -1,36 +1,18 @@
-%btn{
+@mixin btn(){
     text-align: center;
-    padding: 12px 20px;
+    padding: getPadding(1.5) getPadding(3);
     border-radius: $border-1+px;
     border: 2px $color-princip solid;
     min-width: 110px;
 }
 
 .c-boton{
-    @extend %btn;
+    @include btn;
     background-color: $color-princip;
     color: white;
     &--secundario{
+        @include btn;
         background-color: white;
         color: $color-princip;
     }
 }
-
-/* .c-boton--size-lg{
-    padding: 10px 20px;
-    font-size: 20px;
-}
-
-.g--padding-horizontal-8{
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.g--padding-vertical-5{
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.g--font-size-5{
-    font-size: 20px;
-} */

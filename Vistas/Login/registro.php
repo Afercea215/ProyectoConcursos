@@ -8,10 +8,11 @@
         $valida->validaEmail('email', $_POST['email']);
         $valida->Requerido('local-x');
         $valida->Requerido('local-y');
+        $valida->validaIdentificador('identificador',$_POST['identificador']);
         //Comprobamos validacion
         if($valida->ValidacionPasada())
         {
-            if (isset($_POST['usuario'])&&isset($_POST['contrasena'])&&isset($_POST['email'])&&isset($_POST['local-x'])&&isset($_POST['local-y'])) {
+            if (isset($_POST['usuario'])&&isset($_POST['contrasena'])&&isset($_POST['email'])&&isset($_POST['local-x'])&&isset($_POST['local-y'])&&isset($_POST['identificador'])) {
                 $array['id']=10;
                 $array['nombre']=$_POST['usuario'];
                 $array['contrasena']=$_POST['contrasena'];
@@ -19,7 +20,7 @@
                 $array['x']=$_POST['local-x'];
                 $array['y']=$_POST['local-y'];
                 ////////////////////////
-                $array['identificador']="asa";
+                $array['identificador']=$_POST['identificador'];
                 $array['admin']=false;
 
                 if (!empty($_FILES) && $_FILES['imagen']['type']=="image/jpeg" || $_FILES['imagen']['type']=="image/png") {
@@ -35,53 +36,51 @@
                 header('location:./?menu=login');
             }
         }
-        
     }
 ?>
-<div class='w-50 p-3 container'>
-    <div class='login-form'>
-        <form action='' method='post' enctype="multipart/form-data">
-            <h2 class='text-center'>Identificate</h2>
-            <div class='form-group'>
-                <p>Nombre de usuario</p>
-                <input type='text' class='form-control <?php $valida->imprimeClaseInputError('usuario')?>' name='usuario' placeholder='Nombre de usuario' required='required'>
-                <?= $valida->ImprimirError('usuario') ?>
-            </div>
-            <div class='form-group'>
-                <p>Contraseña</p>
-                <input type='password' class='form-control <?php $valida->imprimeClaseInputError('contrasena')?>' name='contrasena' placeholder='Contraseña' required='required'>
-                <?= $valida->ImprimirError('contrasena') ?>
-            </div>
-            <div class='form-group'>
-                <p>Correo Electronico</p>
-                <input type='email' class='form-control <?php $valida->imprimeClaseInputError('email')?>' name='email' placeholder='Correo electrionico' required='required'>
-                <?= $valida->ImprimirError('email') ?>
-            </div>
-            <p>Coordenadas</p>
-            <div class='form-group'>
-                <p>Cordenada Eje X</p>
-                <input type='number' class='form-control <?php $valida->imprimeClaseInputError('local-x')?>' name='local-x' placeholder='Cordenadas X' required='required'>
-                <?= $valida->ImprimirError('local-x') ?>
-            </div>
-            <div class='form-group'>
-                <p>Cordenada Eje Y</p>
-                <input type='number' class='form-control <?php $valida->imprimeClaseInputError('local-y')?>' name='local-y' placeholder='Cordenadas Y' required='required'>
-                <?= $valida->ImprimirError('local-y') ?>
-            </div>
-            <div class='form-group'>
-                <p>Foto de perfil</p>
-                <input type='file' class='form-control <?php $valida->imprimeClaseInputError('imagen')?>' name='imagen'>
-                <?= $valida->ImprimirError('imagen') ?>
-            </div>
-                        
-            <div class='form-group'>
-                <button type='submit' name='submit' class='btn btn-primary btn-block'>Crear Cuenta</button>
-            </div>
-            <div class='clearfix'>
-                <label class='pull-left checkbox-inline'>
-                    <input type='checkbox' name='recuerdame'> Recuerdame</label>
-            </div>
-        </form>
-        <p class='text-center'><a href='./?menu=registro'>Crear una Cuenta</a></p>
-    </div>
-</div>
+<form action='' method='post' enctype="multipart/form-data" class="c-form g-pad--6 g-marg--2 g-shadow--3">
+    <h2 class='g-marg-bottom--1'>Registro</h2>
+
+    <p>Nombre de usuario</p>
+    <input type='text' class='<?php $valida->imprimeClaseInputError('usuario')?>' name='usuario' placeholder='Nombre de usuario' required='required' value='<?php if (isset($_POST['usuario'])){
+        echo $_POST['usuario'];
+        } ?>'>
+    <?= $valida->ImprimirError('usuario') ?>
+
+    <p>Contraseña</p>
+    <input type='password' class='<?php $valida->imprimeClaseInputError('contrasena')?>' name='contrasena' placeholder='Contraseña' required='required' value='<?php if (isset($_POST['usuario'])){
+        echo $_POST['contrasena'];
+        } ?>'>
+    <?= $valida->ImprimirError('contrasena') ?>
+    
+    <p>Correo Electronico</p>
+    <input type='email' class='<?php $valida->imprimeClaseInputError('email')?>' name='email' placeholder='Correo electrionico' required='required' value='<?php if (isset($_POST['usuario'])){
+        echo $_POST['email'];
+        } ?>'>
+    <?= $valida->ImprimirError('email') ?>
+    
+    <p>Identificador</p>
+    <input type='text' class='<?php $valida->imprimeClaseInputError('identificador')?>' name='identificador' placeholder='Identificador' required='required' value='<?php if (isset($_POST['usuario'])){
+        echo $_POST['identificador'];
+        } ?>'>
+    <?= $valida->ImprimirError('identificador') ?>
+    
+    <h3>Coordenadas</h3>
+    <p>Cordenada Eje X</p>
+    <input type='number' class='<?php $valida->imprimeClaseInputError('local-x')?>' name='local-x' placeholder='Cordenadas X' required='required' value='<?php if (isset($_POST['usuario'])){
+        echo $_POST['local-x'];
+        } ?>'>
+    <?= $valida->ImprimirError('local-x') ?>
+    <p>Cordenada Eje Y</p>
+    <input type='number' class='<?php $valida->imprimeClaseInputError('local-y')?>' name='local-y' placeholder='Cordenadas Y' required='required' value='<?php if (isset($_POST['usuario'])){
+        echo $_POST['usuario'];
+        } ?>'>
+    <?= $valida->ImprimirError('local-y') ?>
+
+    <p>Foto de perfil</p>
+    <input type='file' class='<?php $valida->imprimeClaseInputError('imagen')?>' name='imagen'>
+    <?= $valida->ImprimirError('imagen') ?>
+    
+    <button type='submit' name='submit' class='c-boton--secundario g-marg-top--2'>Crear Cuenta</button>
+    <a href='./?menu=login' class=''>Iniciar Sesion</a>
+</form>
