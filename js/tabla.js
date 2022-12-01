@@ -98,6 +98,7 @@ Tabla.prototype.cambiaPagina=function(obj){
 }
 
 Tabla.prototype.actualizaPagina=function(obj=this){
+
     for (let i = 0; i < obj.tBody.rows.length; i++) {
         obj.tBody.rows[i].removeChild(obj.tBody.rows[i].cells[obj.tBody.rows[i].cells.length-1]);
     }
@@ -261,7 +262,7 @@ Tabla.prototype.creaBotonNuevo=function(obj=this){
         btnMasiva.innerHTML="+ Subida Masiva";
         btnMasiva.setAttribute('id', 'btnMasiva');
         btnMasiva.className="c-boton g-marg-bottom--1";
-        btnMasiva.onclick=imprimeFormularioMasivo(obj.nombreColumBd, obj.tipoDato);
+        btnMasiva.onclick=imprimeFormularioMasivo(obj.nombreColumBd, obj.tipoDato, obj);
     
         div.append(btn,btnMasiva);
     }else{
@@ -271,49 +272,10 @@ Tabla.prototype.creaBotonNuevo=function(obj=this){
     return div;
 }
 
-function imprimeFormularioMasivo(nombreColumnas, tipoDato){
+function imprimeFormularioMasivo(nombreColumnas, tipoDato,obj){
     return function () {
-        let form = creaFormMasivo(nombreColumnas);
-        form.submit.onclick=async function (ev) { 
-            ev.preventDefault();
-                
-            let form = this.parentNode.parentNode;
-            const data = new FormData();
-            //data.append('tipo',tipoDato);
-    
-            for (let i = 0; i < form.length-1; i++) {
-                /* if (nombreColumnas[i]=='localizacion') {
-                    data.append('X',form[i].value);
-                    data.append('Y',form[i+1].value);
-                    i++;
-                } else { */
-                data.append(nombreColumnas[i],form[i].value);
-                //}
-            }
-            /////header{'Content-Type': 'application/x-www-form-urlencoded'}
-            let info = await fetch("./api/altaMasiva.php?tipo="+tipoDato, {
-                method: 'POST',
-                body: data
-             }).then(response => response)
-             .then(function (response) {
-                if (response.ok) {
-                    console.log("ole!");      
-                    if(response.status==400){
-                        let div = getPanelError('Error','No se ha podido hacer el alta masiva');
-                        document.body.append(div);
-                    }
-                }else{
-                    let div = getPanelError('Error','No se ha encontrado el recurso');
-                    document.body.append(div);
-                }
-             })
-             document.body.removeChild(this.parentElement.parentElement);
-             document.body.removeChild(document.getElementById("divVentana"));
-    
-            obj.datos = await updateDatos(tipoDato);
-            obj.pintar();
-        }
-    /////////
+        let divTodo = creaFormMasivo(nombreColumnas,tipoDato,obj);
+
         let divVentana= document.createElement("div");
         
         divVentana = document.createElement("div");
@@ -326,26 +288,27 @@ function imprimeFormularioMasivo(nombreColumnas, tipoDato){
         divVentana.style.width="100%";
         divVentana.style.height="100%";
         divVentana.style.background="black";
-        document.body.appendChild(divVentana);
         
-        form.style.position="absolute";
-        form.style.zIndex=100;
-        var left =parseInt(window.innerWidth-form.width)/2+"px"; 
-        var top =parseInt(window.innerHeight-form.height)/2+"px";
-        form.style.top=top;
-        form.style.left=left;
-        document.body.appendChild(form);       
+        divTodo.style.position="absolute";
+        divTodo.style.zIndex=100;
+        var left =parseInt(window.innerWidth-divTodo.width)/2+"px"; 
+        var top =parseInt(window.innerHeight-divTodo.height)/2+"px";
+        divTodo.style.top=top;
+        divTodo.style.left=left;
+        
+        document.body.appendChild(divVentana);
+        document.body.appendChild(divTodo);       
     }
 }
 
-function creaFormMasivo(){
-    let form = document.createElement("form");
+function creaFormMasivo(nombreColumnas, tipoDato, obj){
+    let divTodo = document.createElement("div");
     
     //btn salir
     let btnX=creaBotonX();
-    form.appendChild(btnX);
+    divTodo.appendChild(btnX);
 
-    form.className="c-form--masivo animZoom";
+    divTodo.className="c-form--masivo animZoom";
 
     let divTitulo = document.createElement("div");
     divTitulo.className="c-form__titulo";
@@ -357,7 +320,7 @@ function creaFormMasivo(){
 
     divTitulo.appendChild(h2);
     divTitulo.appendChild(document.createElement("hr"));
-    form.appendChild(divTitulo);
+    divTodo.appendChild(divTitulo);
 
     let label = document.createElement('label');
     label.setAttribute('for','csv');
@@ -376,6 +339,9 @@ function creaFormMasivo(){
             textRaw=fr.result;
             datos=csvToArray(textRaw,';');
 
+            let form = document.createElement('form');
+        
+            //imprimo inputs
             for (let i = 0; i < datos.length; i++) {
                 let divFila = document.createElement('div');
                 let keysObj = Object.keys(datos[i]);
@@ -396,35 +362,83 @@ function creaFormMasivo(){
                         }else{
                             input.value=datos[i][keysObj[j]];
                         }
-                        input.setAttribute('name',keysObj[j]+'[]');
+                        input.name=keysObj[j]+'[]';
 
                         divFila.append(label,input);
                     }
                 }
                 form.appendChild(divFila);
             }
+            //crea boton enviar
+            let btn = document.createElement("button");
+            btn.value="Crear";
+            btn.name="submit";
+            btn.innerHTML="Crear";
+            btn.style.marginTop="7%";
+            btn.classList="c-boton c-boton--secundario";
+            form.appendChild(btn);
+
+            //envia info form
+            form.submit.onclick=async function (ev) { 
+                ev.preventDefault();
+                let form = this.form;
+                const data = new FormData(form);
+                //console.log(data);
+                //data.append('tipo',tipoDato);
+                /* let datos=[];
+                let div = form.querySelectorAll('div');
+
+                for (let j = 0; j < div.length; j++) {
+                    let aux={};
+                    let inputs = div[j].querySelectorAll('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        let cadena = inputs[i].name.split('[')[0];
+                        aux[cadena]=inputs[i].value;
+                        //data.append(inputs[i].name,inputs[i].value);
+                    }
+                    datos.push(aux);
+                } */
+                console.log(datos);
+                console.log(JSON.stringify(datos));
+                //let formEnvio = new FormData(form);
+                //formEnvio.append('json',JSON.stringify(datos));
+                /////header{'Content-Type': 'application/x-www-form-urlencoded'}
+                let info = await fetch("./api/altaMasiva.php?tipo="+tipoDato, {
+                    method: 'POST',
+                    body: data
+                    /* headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      } */
+                 }).then(response => response)
+                 .then(function (response) {
+                    if (response.ok) {
+                        console.log("ole!");      
+                        if(response.status==400){
+                            let div = getPanelError('Error','No se ha podido hacer el alta masiva');
+                            document.body.append(div);
+                        }
+                    }else{
+                        let div = getPanelError('Error','No se ha encontrado el recurso');
+                        document.body.append(div);
+                    }
+                 })
+                 document.body.removeChild(this.parentElement.parentElement);
+                 document.body.removeChild(document.getElementById("divVentana"));
+        
+                obj.datos = await updateDatos(tipoDato);
+                obj.pintar();
+            }
+
+            divTodo.appendChild(form);
         }
         fr.readAsText(this.files[0]);
         
-
     })
 
+    divTodo.append(label,inputCsv);
 
-    form.append(label,inputCsv);
-
-    div = document.createElement("div");
-    let btn = document.createElement("button");
-    btn.value="Crear";
-    btn.name="submit";
-    btn.innerHTML="Crear";
-    btn.style.marginTop="7%";
-    btn.classList="c-boton c-boton--secundario";
-
-    div.append(document.createElement("hr"),btn);
-    div.className="c-form__footer";
-    form.appendChild(div);
-
-    return form;
+    return divTodo;
 }
 
 function subeFila() {
@@ -728,7 +742,6 @@ function imprimeFormularioEdicion(nombreColumnas, datos, tipoDato,obj){
          })
          document.body.removeChild(this.parentElement.parentElement);
          document.body.removeChild(document.getElementById("divVentana"));
-         debugger
          obj.datos = await updateDatos(tipoDato);
          obj.pintar();
     }
@@ -896,6 +909,7 @@ function creaBotonX(){
 function csvToArray(str, delimiter = ",") {
     // slice from start of text to the first \n index
     // use split to create an array from string by delimiter
+    str=str.replace("\r","")
     const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
   
     // slice from \n index + 1 to the end of the text

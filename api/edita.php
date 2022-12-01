@@ -7,8 +7,6 @@
         if (isset($_GET['tipo'])) {
             if (isset($_POST)) {
                 try {
-                    unset($_POST['imagen']);
-
                     if (isset($_POST['admin'])) {
                         $_POST['admin']=='on'?$_POST['admin']=1:$_POST['admin']=0;
                     }
