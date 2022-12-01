@@ -11,7 +11,6 @@
     background-color: $color-princip;
     color: white;
     &--secundario{
-        @include btn;
         background-color: white;
         color: $color-princip;
     }

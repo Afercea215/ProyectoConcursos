@@ -212,6 +212,29 @@ class GBD
         }
     }
 
+    public static function updateQuery(string $tabla, array $valores)
+    {
+        $sql="update $tabla set ";
+        $condicion="id =".$valores['id'];
+        unset($valores['id']);
+        
+        $campos=implode("=?, ",array_keys($valores));
+        $campos.="=?";
+        $sql.=$campos." where ";
+        $sql.=$condicion;
+        try
+        {
+            $consulta=GBD::getConexion()->prepare($sql);
+            $valores=array_values($valores);
+            //$parametros=array_merge($valores,array_values($valores));
+            $consulta->execute($valores);
+        }
+        catch(PDOException $e)
+        {
+            throw new PDOException("Error modificando fila: ".$e->getMessage());
+        }
+    }
+
     /**
      * Borra una fila de la tabla por clave primaria
      *

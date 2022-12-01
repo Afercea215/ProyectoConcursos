@@ -1,8 +1,10 @@
 .c-paginacion{
-    min-width: 100px;
+    width: 100px;
     display: flex;
-
     margin-top: 2%;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
 
     &__actual{
         color: $color-sec;

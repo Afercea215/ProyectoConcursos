@@ -29,7 +29,7 @@
         <?php
          if (!Sesion::estaLogeado()) {
             echo '<a href="./?menu=login" class="c-boton">Login</a>    
-                  <a href="./?menu=registro" class="c-boton--secundario">Registrarse</a>';    
+                  <a href="./?menu=registro" class="c-boton c-boton--secundario">Registrarse</a>';    
          }else{
             echo "<a href='./?menu=cerrarsesion'>Cerrar Sesion</a>
                   <div class='c-header__indentificacion__logo-usuario'>

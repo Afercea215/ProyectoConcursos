@@ -81,6 +81,6 @@
     <input type='file' class='<?php $valida->imprimeClaseInputError('imagen')?>' name='imagen'>
     <?= $valida->ImprimirError('imagen') ?>
     
-    <button type='submit' name='submit' class='c-boton--secundario g-marg-top--2'>Crear Cuenta</button>
+    <button type='submit' name='submit' class='c-boton c-boton--secundario g-marg-top--2'>Crear Cuenta</button>
     <a href='./?menu=login' class=''>Iniciar Sesion</a>
 </form>

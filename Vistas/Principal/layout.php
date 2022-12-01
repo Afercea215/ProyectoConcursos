@@ -10,6 +10,7 @@
     <script src="../../js/tabla.js"></script>
     <script src="../../js/listadoParticipantes.js"></script>
     <script src="../../js/menuDesplegable.js"></script>
+    <script src="../../js/errores.js"></script>
     
     <link rel="stylesheet" href="../../css/main.css">
 </head>

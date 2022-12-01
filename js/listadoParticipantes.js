@@ -4,12 +4,9 @@
         let datos = await getParticipantes();
         let nombreColumnas=["id","Nombre","Identificador", "Administrador", "Correo", "Imagen", "Localizacion"]; 
         let nombreColumnasDb=["id","nombre","identificador", "admin", "correo", "imagen", "localizacion"]; 
-
-        let tablaConcursos=new Tabla(nombreColumnas,datos,nombreColumnasDb,"Participante");
+        let tablaConcursos=new Tabla(nombreColumnas,datos,nombreColumnasDb,"Participante",true);
         
-        main.append(tablaConcursos.tabla,tablaConcursos.divPaginas);
-
-
+        main.append(tablaConcursos.btnNuevo,tablaConcursos.tabla,tablaConcursos.divPaginas);
     }
 
     async function getParticipantes(tipo='participante'){

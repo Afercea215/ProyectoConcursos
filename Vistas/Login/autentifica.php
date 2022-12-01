@@ -27,7 +27,7 @@
         <input type='password' class='form-control <?php $valida->imprimeClaseInputError('contrasena')?>' name='contrasena' placeholder='Contraseña'
             required='required'>
         <?= $valida->ImprimirError('contrasena') ?>
-        <button type='submit' name='submit' class='c-boton--secundario g-marg-top--1'>Iniciar Sesion</button>
+        <button type='submit' name='submit' class='c-boton c-boton--secundario g-marg-top--1'>Iniciar Sesion</button>
         <a href='./?menu=registro'>Crear una Cuenta</a>
         <div class="g-pad-top--0">
             <input type='checkbox' name='recuerdame' value="">

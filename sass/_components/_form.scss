@@ -96,6 +96,7 @@
     }
 
     &--edicion{
+        transition: height 1s ease-in 0s;
         @include form;
         flex-direction: row;
         flex-wrap: wrap;
@@ -188,4 +189,21 @@
     color: red;
     font-size: 80%;
     margin-bottom: 3%;
+}
+
+
+@keyframes append-animate {
+	from {
+		transform: scale(0);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;	
+	}
+}
+
+/* animate new box */
+.animZoom {
+	animation: append-animate .3s ease-in-out;
 }
