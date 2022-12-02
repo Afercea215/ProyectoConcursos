@@ -143,13 +143,7 @@ Tabla.prototype.ordenar=function() {
     let numColum = this.orden['variable'];
     let orden = (this.orden['creciente'])?1:-1; 
     let array=[];
-    /////////////////
-/*     for (let i = 0; i < this.datos.length; i++) {
-        this.datos.sort(function (a,b) {
-            ;
-            return (a[this.nombreColumBd[numColum]]).localeCompare(b.cells[numColum].innerHTML) * orden;
-        });        
-    } */
+    
     for (let i = 0; i < this.tBody.rows.length; i++) {
         array.push(this.tBody.rows[i]);        
     }

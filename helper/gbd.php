@@ -31,6 +31,15 @@ class GBD
         return GBD::$conexion;
     }
 
+    public static function getAllArray($tabla){
+        $sql="select * from ".$tabla;
+        $consulta=GBD::getConexion()->prepare($sql);
+        $consulta->execute();
+        $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
+
+        return $datos;
+    }
+
     /**
      * Lee todos los registros de una tabla pudiendo seleccionar los campos
      *
@@ -133,6 +142,32 @@ class GBD
          
     }
 
+
+    public static function getPag($tabla, $pag, $orderBy, $crecimiento, $tamañoPag=5)
+    {
+        $limit=$tamañoPag;
+        $offset=($pag*$limit)-$tamañoPag;
+        $sql="select * from ".$tabla." order by ".$orderBy." ".$crecimiento." limit ".$limit." offset ".$offset;
+
+         try
+         {
+             $consulta=GBD::getConexion()->prepare($sql);
+             $consulta->execute();
+             $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
+
+             if (!$datos) {
+                throw new Exception("Error leyendo por la pag : ".$pag);   
+             }else{
+                return $datos;
+             }
+         }
+         catch(PDOException $e)
+         {
+            throw new PDOException($e->getMessage());
+         }
+         
+    }
+
 /*     public function findByOne(string $tabla,$campovalor)
     {
          $sql="select * from ".$tabla." where ".array_keys($campovalor)[0]." = ?";
@@ -160,7 +195,6 @@ class GBD
     public static function add(string $tabla, array $valores)
     {
         unset($valores['id']);
-        ////////////////////////////////
         for ($i=0; $i <sizeof($valores); $i++) { 
             $valores[$i]=GBD::compruebaValorVacio($valores[$i]);
         }

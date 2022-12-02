@@ -11,7 +11,7 @@ if (Sesion::estaLogeado()) {
         }
     }else{
         echo "faltan datos :(";
-    };
+    }
 } else{
     header('location ./?menu=login');
 }

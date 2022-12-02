@@ -2,6 +2,21 @@
 class RepositorioConcurso{
     public static $nomTabla="concurso";
 
+
+    public static function getPag($pag, $crecimiento, $orderBy='id'){
+        try {
+            $obj = GBD::getPag(RepositorioConcurso::$nomTabla, $pag, $orderBy, $crecimiento, $tamañoPag=5);
+            $concursos=[];
+            for ($i=0; $i <sizeof($obj) ; $i++) { 
+                $concursos[$i]=Concurso::arrayToConcurso($obj[$i]);
+            }
+            return $concursos;    //code...
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        
+    }
+
     public static function getById($id){
         try {
             $obj = GBD::findById(RepositorioConcurso::$nomTabla,$id);

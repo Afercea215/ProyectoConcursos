@@ -12,6 +12,7 @@ class RepositorioModo{
         
     }
 
+
     public static function add(Modo $modo){
         try {
             $array = $modo->modoToArray(); 

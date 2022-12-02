@@ -25,7 +25,7 @@
         public static function arrayToConcurso(array $array): Concurso{
                 $id=$array['id'];
                 $nombre=$array['nombre'];
-                $descrip=$array['descrip'];
+                $descrip=$array['desc'];
                 $fIni = $array['fini']; 
                 $fFin = $array['ffin'];
                 $fIniInscrip=$array['finiInscrip'];
