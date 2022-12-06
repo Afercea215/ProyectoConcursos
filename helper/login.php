@@ -3,7 +3,7 @@ class Login
 {
     //funcion verificar si es admin
     public static function usuarioEsAdmin(){
-        if (sesion::leer('rol')=="admin") {
+        if (Sesion::leer('usuario')->getAdmin()) {
             return true;
         } else{
             return false;

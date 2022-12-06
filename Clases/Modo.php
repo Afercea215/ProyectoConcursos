@@ -3,7 +3,7 @@ class Modo{
     private $id;
     private $nombre;
 
-    public function __construct(int $id, int $nombre)
+    public function __construct(int $id, string $nombre)
     {
         $this->setId($id);
         $this->setNombre($nombre);

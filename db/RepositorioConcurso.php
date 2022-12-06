@@ -51,7 +51,7 @@ class RepositorioConcurso{
         try {
              GBD::delete(RepositorioConcurso::$nomTabla, $id);
         } catch (Exception $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         }
         
     }
@@ -63,24 +63,35 @@ class RepositorioConcurso{
         }
         return $concursosObj;
     }
+public static function getJueces($id){
+        $partipantes = RepositorioConcurso::getParticipantes($id);
+        for ($i=0; $i <sizeof($partipantes); $i++) { 
+            if ($partipantes[$i]['juez']) {
+                $array[]=$partipantes[$i]['participante'];
+            }
+        }
+        return $array;
+    }
 
-    ///////////////////////////////TO DO revisar
     public static function getBandas($id){
 
-        /* SELECT * FROM concursos.banda_TIENE_concurso
-        join concurso on concurso.id=banda_TIENE_concurso.concurso_id
-        join banda on banda.id=banda_tiene_concurso.banda_id; */
-
-        $sql="select * from ".RepositorioConcurso::$nomTabla." join banda_tiene_concurso on concurso.id=banda_TIENE_concurso.concurso_id join banda on banda.id=banda_tiene_concurso.banda_id"
-        ." where concurso.id=".$id;
+        $sql="SELECT banda.* FROM banda join banda_tiene_concurso on banda.id=banda_tiene_concurso.banda_id where concurso_id=".$id;
         try
         {
             $consulta=GBD::getConexion()->prepare($sql);
             $consulta->execute();
             $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
-
-            for ($i=0; $i <sizeof($datos); $i++) { 
-                $bandasObj[]=new Banda($datos[$i]['banda.id'],$datos[$i]['distancia.id'],$datos[$i]['rangoMin.id'],$datos[$i]['rangoMax.id']);
+            if ($datos) {
+                for ($i=0; $i <sizeof($datos); $i++) { 
+                    $id = $datos[$i]['id'];
+                    $distancia = $datos[$i]['distancia'];
+                    $rangoMin = $datos[$i]['rangoMin'];
+                    $rangoMax = $datos[$i]['rangoMax'];
+    
+                    $bandasObj[]=new Banda($id,$distancia,$rangoMin,$rangoMax);
+                }
+            }else{
+                return false;
             }
 
             return $bandasObj;
@@ -89,23 +100,19 @@ class RepositorioConcurso{
         }
     }
 
-    ///////////////////////////////TO DO tiene que devolver concursos
     public static function getModos($id){
-        //$sql="select * from ".RepositorioConcurso::$nomTabla." join modo_tiene_concurso on concurso.id=modo_TIENE_concurso.concurso_id join modo on modo.id=modo_tiene_concurso.modo_id"
-        //." where concurso.id=".$id();
-        $sql="select * from ".RepositorioConcurso::$nomTabla." join modo_tiene_concurso on concurso.id=modo_TIENE_concurso.concurso_id join modo on modo.id=modo_tiene_concurso.modo_id"
-        ." where concurso.id=".$id;
+        $sql="select modo.*, modo_tiene_concurso.premio from modo join modo_tiene_concurso on modo.id=modo_tiene_concurso.modo_id where modo_tiene_concurso.concurso_id=".$id;
         try
         {
             $consulta=GBD::getConexion()->prepare($sql);
             $consulta->execute();
             $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
 
-            for ($i=0; $i <sizeof($datos); $i++) { 
-                $modosObj[]=new Modo($datos[$i]['modo.id'],$datos[$i]['banda.id']);
-            }
+            //for ($i=0; $i <sizeof($datos); $i++) { 
+                //$modosObj[]=new Modo($datos[$i]['id'],$datos[$i]['banda.id']);
+            //}
             
-            return $modosObj;
+            return $datos;
         } catch (Exception $e) {
             echo $e->getMessage();
         }       
@@ -115,27 +122,48 @@ class RepositorioConcurso{
         
     }
 
-    public static function getMensajes($id)
+    public static function getMensajes($id,$orderBy,$tipoOrden,$pag,$tamañoPag=5)
     {
-        $sql="select qso.* from participacion join qso on qso.participacion_id=participacion.id where participacion.concurso_id=".$id;
+        $limit=$tamañoPag;
+        $offset=($pag-1)*$tamañoPag;
+
+        $sql="select qso.* , banda.distancia, banda.rangoMin, banda.rangoMax, modo.nombre, participante.nombre as 'nombreUsuario', participante.identificador from participacion
+        join qso on qso.participacion_id=participacion.id
+        join participante on participante.id=participacion.participante_id
+        join modo on modo.id=qso.modo_id
+        join banda on banda.id=qso.banda_id
+
+        where participacion.concurso_id=$id
+        order by $orderBy $tipoOrden limit $limit offset $offset";
+        
         try
         {
             $consulta=GBD::getConexion()->prepare($sql);
             $consulta->execute();
             $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
 
-            for ($i=0; $i <sizeof($datos); $i++) { 
-                $id=$datos[$i]['qso.id'];
-                $fecha=$datos[$i]['qso.fecha'];
-                $banda_id=$datos[$i]['qso.banda_id'];
-                $modo_id=$datos[$i]['qso.modo_id'];
-                $participacion=$datos[$i]['qso.participacion'];
-                $valido=$datos[$i]['qso.valido'];
-                
-                $mensajesObj[]=new Qso($id,$fecha,$valido,$banda_id,$modo_id,$participacion,$valido);
+            if ($datos) {
+                for ($i=0; $i <sizeof($datos); $i++) { 
+                   $id=$datos[$i]['id'];
+                   $fecha=$datos[$i]['fecha'];
+                   $banda_id=$datos[$i]['banda_id'];
+                   $modo_id=$datos[$i]['modo_id'];
+                   $receptor_id=$datos[$i]['receptor_id'];
+                   $participacion=$datos[$i]['participacion_id'];
+                   $valido=$datos[$i]['valido'];
+                   $mensaje=new Qso($id,$fecha,$valido,$receptor_id,$banda_id,$modo_id,$participacion,$valido);
+                   
+                   $mensajes[$i]['qso']=$mensaje;
+                   $mensajes[$i]['banda']=[$datos[$i]['distancia'],$datos[$i]['rangoMin'],$datos[$i]['rangoMax']];
+                   $mensajes[$i]['modo']=$datos[$i]['nombre'];
+                   $mensajes[$i]['emisor']=$datos[$i]['nombreUsuario'];
+   
+               }
+            }else{
+                return false;
             }
             
-            return $mensajesObj;
+            return $mensajes;
         } catch (Exception $e) {
             echo $e->getMessage();
         }  
@@ -143,18 +171,47 @@ class RepositorioConcurso{
     
     public static function getParticipantes($id)
     {
-        $sql="select participante.* from participante join participacion on participante.id=participacion.participante_id where participacion.concurso_id=$id";
+        $sql="select participante.*, ST_X(localizacion) as x,  ST_Y(localizacion) as y, participacion.juez from participante join participacion on participante.id=participacion.participante_id where participacion.concurso_id=$id";
         try
         {
             $consulta=GBD::getConexion()->prepare($sql);
             $consulta->execute();
             $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
-
-            for ($i=0; $i <sizeof($datos); $i++) {                 
-                $participantesObj[]=Participante::arrayToParticipante($datos[$i], true);
+            if ($datos) {
+                for ($i=0; $i <sizeof($datos); $i++) {    
+                    $participantesObj[$i]['juez']=($datos[$i]['juez']=='1')?true:false;
+                    unset($datos[$i]['juez']);
+                    $participantesObj[$i]['participante']=Participante::arrayToParticipante($datos[$i]);
+                                 
+                } 
+            }else{
+                return false;
             }
-            
             return $participantesObj;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }   
+    }
+
+    public static function getMensajesParticipante($idParticipante, $idConcurso ,$orderBy,$tipoOrden,$pag,$tamañoPag=5)
+    {
+        $limit=$tamañoPag;
+        $offset=($pag-1)*$tamañoPag;
+
+        $sql="select qso.* from participacion join qso on qso.participacion_id=participacion.id
+        where participacion.concurso_id=$idConcurso and participacion.participante_id=$idParticipante
+        order by $orderBy $tipoOrden limit $limit offset $offset";
+        
+        try
+        {
+            $qsoObj=[];
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
+            for ($i=0; $i <sizeof($datos); $i++) {                 
+                $qsoObj[]=Qso::arrayToQso($datos[$i]);
+            } 
+            return $qsoObj;
         } catch (Exception $e) {
             echo $e->getMessage();
         }   
@@ -172,7 +229,45 @@ class RepositorioConcurso{
     }
 
     public static function getActivos(){
+
+        $sql="SELECT * FROM concurso
+        WHERE fini < now()
+        AND ffin > now()
+        ORDER BY fini desc";
         
+        try
+        {
+            $obj=[];
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
+            for ($i=0; $i <sizeof($datos); $i++) {                 
+                $obj[]=Concurso::arrayToConcurso($datos[$i]);
+            } 
+            return $obj;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        } 
+    }
+
+    public static function getFinalizados(){
+        $sql="SELECT * FROM concurso
+        WHERE ffin < now()
+        ORDER BY ffin desc";
+        
+        try
+        {
+            $obj=[];
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
+            for ($i=0; $i <sizeof($datos); $i++) {                 
+                $obj[]=Concurso::arrayToConcurso($datos[$i]);
+            } 
+            return $obj;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        } 
     }
 
     /**

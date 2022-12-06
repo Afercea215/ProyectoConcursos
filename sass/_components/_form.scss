@@ -132,7 +132,6 @@
         & input{
             border-radius: $border-0+px;
             height: 30px;
-            border: none;
             margin: 0.5% 0;
             
             &[type=file]{
@@ -154,7 +153,6 @@
         padding: 1% 4%;
         border-radius: $border-0+px;
         height: 30px;
-        border: none;
         margin: 2% 0;
     }
     & div{

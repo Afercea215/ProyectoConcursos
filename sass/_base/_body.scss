@@ -29,9 +29,9 @@ body{
 a{
     text-decoration: none;
 }
-/* a:visited{
-    color: $color-sec;
-} */
+ a:visited{
+    color: inherit;
+}
 
 h1{
     font-size: 60px;
@@ -49,4 +49,11 @@ h3{
     font-size: 20px;
     color: $color-sec;
     font-weight: bold;
+}
+.errorInput{
+    border: solid;
+    border: 2px solid red;
+}
+.errorTexto{
+    color: red;
 }

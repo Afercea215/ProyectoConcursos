@@ -11,10 +11,10 @@ class Sesion
         return isset($_SESSION[$clave])?$_SESSION[$clave]:false;
     }
 
-    public static function recordarSesion($usuario, $contrasena){
+    public static function recordarSesion($participante){
         setcookie('recuerdame',true);
-        setcookie('usuario',$usuario);
-        setcookie('contrasena',$contrasena);
+        setcookie('usuario',$participante->getNombre());
+        setcookie('contrasena',$participante->getContrasena());
     }
     
     public static function estaLogeado(){
@@ -24,12 +24,10 @@ class Sesion
     public static function iniciaSesion($participante, $recuerdame=false){
         
         if ($participante) {
-            Sesion::escribir('usuario',$participante->getNombre());
-            Sesion::escribir('rol',$participante->getAdmin());
-            Sesion::escribir('imagen',$participante->getImagen());
+            Sesion::escribir('usuario',$participante);
 
             if ($recuerdame) {
-                Sesion::recordarSesion($participante->getNombre(), $participante->getContrasena());
+                Sesion::recordarSesion($participante);
             }
         }
         //Sesion::escribir('identificador',$identificador);
@@ -37,7 +35,7 @@ class Sesion
 
     public static function esAdmin()
     {
-        return Sesion::leer('rol');
+        return Sesion::leer('usuario')->getAdmin();
     }
 
     public static function existe(string $clave)

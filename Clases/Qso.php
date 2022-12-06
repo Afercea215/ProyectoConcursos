@@ -3,15 +3,17 @@ class Qso{
     private $id;
     private DateTime $fecha;
     private bool $valido;
+    private $receptor_id;
     private $banda_id;
     private $modo_id;
     private $participacion_id;
 
-    public function __construct(int $id, string $fecha, bool $valido, string $banda_id,string $modo_id,string $participacion_id)
+    public function __construct(int $id, string $fecha, bool $valido,string $receptor_id, string $banda_id,string $modo_id,string $participacion_id)
     {
         $this->setId($id);
         $this->setFecha($fecha);
         $this->setValido($valido);
+        $this->setReceptor_id($receptor_id);
         $this->setbanda_id($banda_id);
         $this->setmodo_id($modo_id);
         $this->setparticipacion_id($participacion_id);
@@ -21,16 +23,18 @@ class Qso{
         $id=$array['id'];
         $fecha=$array['fecha']; 
         $valido=$array['valido']; 
+        $receptor=$array['receptor_id']; 
         $banda_id=$array['banda_id']; 
         $modo_id=$array['modo_id']; 
         $participacion_id=$array['participacion_id']; 
-        return new Qso($id, $fecha, $valido, $banda_id, $modo_id, $participacion_id);
+        return new Qso($id, $fecha, $valido, $receptor, $banda_id, $modo_id, $participacion_id);
     }
 
     public function qsoToArray (){
         $array['id']=$this->getId();
         $array['fecha']=$this->getFecha();
         $array['valido']=$this->getValido();
+        $array['receptor_id']=$this->getReceptor_id();
         $array['banda_id']=$this->getbanda_id();
         $array['modo_id']=$this->getmodo_id();
         $array['participacion_id']=$this->getparticipacion_id();
@@ -153,6 +157,26 @@ class Qso{
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of receptor_id
+     */ 
+    public function getReceptor_id()
+    {
+        return $this->receptor_id;
+    }
+
+    /**
+     * Set the value of receptor_id
+     *
+     * @return  self
+     */ 
+    public function setReceptor_id($receptor_id)
+    {
+        $this->receptor_id = $receptor_id;
 
         return $this;
     }

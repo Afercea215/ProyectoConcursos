@@ -12,6 +12,25 @@ class RepositorioQso{
         
     }
 
+    public static function getEmisor($id)
+    {
+
+        $sql="select participante.* , ST_X(localizacion) as x,  ST_Y(localizacion) as y from participante join participacion on participante.id=participacion.participante_id
+        join qso on qso.participacion_id=participacion.id
+        where qso.id=$id";
+        
+        try
+        {
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            $participante = Participante::arrayToParticipante($datos);
+            return $participante;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }   
+    }
+
     public static function add(Qso $qso){
         try {
             $array = $qso->QsoToArray(); 

@@ -20,6 +20,24 @@ class RepositorioParticipante{
         }
     }
 
+    public static function esJuez($id, $idConcurso){
+        try {
+            
+            $sql="select participacion.juez from participante join participacion on participante.id=participacion.participante_id where participante.id=$id and participacion.concurso_id=$idConcurso";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            if ($datos && $datos['juez']==1) {
+                return true;
+            }else{
+                return false;
+            }
+            
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     /* public static function getRol($id, $contrasena){
         try {
             
@@ -47,7 +65,7 @@ class RepositorioParticipante{
             $sql.=$condicion;
             $consulta=GBD::getConexion()->prepare($sql);
             $consulta->execute([$id]);
-            $datos=$consulta->fetchAll(PDO::FETCH_ASSOC);
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
 
             if (!$datos) {
                 throw new Exception("Error leyendo por la id: ".$id);   

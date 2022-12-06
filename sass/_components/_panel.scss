@@ -1,0 +1,63 @@
+.c-panel{
+    background-color: $color-princip;
+    border-radius: getBorder(2);
+    color: $color-sec;
+
+    margin: 3% 2%;
+
+    width: 700px;
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+
+    & h2{
+        color: $color-sec;
+        font-weight: bold;
+        font-size: 125%;
+    }
+
+    &__texto{
+        display: flex;
+        flex: 2;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10% 5%;
+        justify-content: space-evenly;
+        text-align: center;
+
+        & h2{
+            margin-bottom: 3%;
+        }
+
+        &__fechas{
+            margin-top: 4%;
+            font-size: 75%;
+        }
+
+        & .c-boton{
+            margin-top: 2%;
+        }
+    }
+
+    & img{
+        height: 250px;
+        width: 250px;
+        border-radius: getBorder(2);
+        object-fit: cover;
+        margin-right: 4%;
+    }
+
+    &--error{
+        background-color: rgb(218, 218, 218);
+        position: absolute;
+        top: 0px;
+        max-width: 30%;
+        z-index: 150;
+        color: white;
+        padding: 5%;
+    }
+}

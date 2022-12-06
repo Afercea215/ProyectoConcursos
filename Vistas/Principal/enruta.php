@@ -24,5 +24,14 @@ if (isset($_GET['menu'])) {
     if ($_GET['menu'] == "listadoConcursos") {
         require_once './Vistas/Mantenimiento/listadoConcursos.php';
     }
+    if ($_GET['menu'] == "verConcurso") {
+        require_once './Vistas/Mantenimiento/verConcurso.php';
+    }
+    if ($_GET['menu'] == "concursos") {
+        require_once './Vistas/Mantenimiento/concursos.php';
+    }
+    if ($_GET['menu'] == "verMensajesParticipante") {
+        require_once './Vistas/Mantenimiento/verMensajesParticipante.php';
+    }
 }
     //Añadir otras rutas

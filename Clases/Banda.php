@@ -7,10 +7,10 @@ class Banda{
 
     public function __construct(int $id, int $distancia,int $rangoMin,int $rangoMax)
     {
-        $this->$id=$id;
-        $this->$distancia=$distancia;
-        $this->$rangoMin=$rangoMin;
-        $this->$rangoMax=$rangoMax;
+        $this->setId($id);
+        $this->setDistancia($distancia);
+        $this->setRangoMin($rangoMin);
+        $this->setRangoMax($rangoMax);
     }
     
     public static function arrayToBanda(array $array): Banda{
@@ -93,6 +93,18 @@ class Banda{
     public function setRangoMax($rangoMax)
     {
         $this->rangoMax = $rangoMax;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }

@@ -7,21 +7,17 @@
     }
 ?>
 <header class="c-header">
-    <img src="../../img/logo-blanco.png" class="c-header__logo" alt="">
+    <a href="./?menu=inicio"><img src="../../img/logo-blanco.png" class="c-header__logo" alt=""></a>
     <nav class="c-header__menu">
-        <a href="./?menu=inicio">Home</a>
         <a href="./?menu=concursos">Concursos</a>
         <?php
-            if (Sesion::esAdmin()) {
+            if (Sesion::estaLogeado() && Sesion::esAdmin()) {
                 
-                echo '<div class="menuDesplegable" id="mantenimiento">
-                        Mantenimiento
-                        <div id="submenu" class="menuDesplegable__submenu">
-                            <a href="./?menu=listadoConcursos">Concursos</a>
-                            <a href="./?menu=listadoParticipantes">Participantes</a>
-                        </div>
-                      </div>';
-                echo '';
+                echo '<a href="./?menu=listadoConcursos">Mantenimiento Concursos</a>
+                      <a href="./?menu=listadoParticipantes">Mantenimiento Participantes</a>
+                      <a href="./?menu=listadoBandas">Mantenimiento Bandas</a>
+                      <a href="./?menu=listadoModos">Mantenimiento Modos</a>
+                      ';
             }
         ?>
     </nav>
@@ -33,7 +29,7 @@
          }else{
             echo "<a href='./?menu=cerrarsesion'>Cerrar Sesion</a>
                   <div class='c-header__indentificacion__logo-usuario'>
-                    <img src='".Sesion::leer('imagen')."' class='logo' alt=''>
+                    <img src='".Sesion::leer('usuario')->getImagen()."' class='logo' alt=''>
                     <span>▼</span>
                   </div>";
          } 

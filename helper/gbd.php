@@ -300,6 +300,10 @@ class GBD
     }
 
     public static function creaFecha(string $fecha){
+        if (str_contains($fecha,'T')) {
+            $fecha = str_replace("T","",$fecha);
+            $fecha=substr($fecha,0,10)." ".substr($fecha,10).":00";
+        }
         $date = DateTime::createFromFormat('Y-m-d H:i:s', $fecha);
         $date->format('d/m/Y H:i:s');
 
