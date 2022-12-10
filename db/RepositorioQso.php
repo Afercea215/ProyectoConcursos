@@ -32,11 +32,18 @@ class RepositorioQso{
     }
 
     public static function add(Qso $qso){
-        try {
-            $array = $qso->QsoToArray(); 
-             GBD::add(RepositorioQso::$nomTabla, $array);
-        } catch (Exception $e) {
-            echo $e->getMessage();
+ 
+        $array = $qso->QsoToArray(); 
+        $sql="insert into qso values (null,'".$array['fecha']->format('Y-m-d H:i:s')."',".$array['banda_id'].", ".$array['modo_id'].",".$array['participacion_id'].",".($array['valido']?"1":"0").",".$array['receptor_id'].")";
+        //$sql = "INSERT INTO PARTICIPANTE VALUES (1,'sdf',1,'sdfds','ssdf','GeomFromText(POINT(20 10))','dfgdfgd','dfgdfg')";
+        try
+        {
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new PDOException("Error insertando registro: ".$e->getMessage());
         }
         
     }
@@ -44,8 +51,13 @@ class RepositorioQso{
 
     public static function update(Qso $qso){
         try {
-            $array = $qso->qsoToArray(); 
-             GBD::update(RepositorioQso::$nomTabla, $array);
+            $valores = $qso->qsoToArray(); 
+            $valores['fecha']=$valores['fecha']->format('Y-m-d H:i:s');
+            //GBD::update(RepositorioParticipante::$nomTabla, $array);
+            //$sql="update participante set identificador='".$valores['identificador']."', contrasena='".$valores['contrasena']."', admin=".$valores['admin'].", correo='".$valores['correo']."', localizacion=".$valores['localizacion'].", imagen='".$valores['imagen']."', nombre='".$valores['nombre']."' where id=".$valores['id'];
+            $sql = "update qso set fecha='".$valores['fecha']."', banda_id=".$valores['banda_id'].", modo_id=".$valores['modo_id'].", participacion_id=".$valores['participacion_id'].", valido=".($valores['valido']?'1':'0').", receptor_id=".$valores['receptor_id']." where id=".$valores['id'];
+            GBD::getConexion()->query($sql);
+            //$parametros=array_merge($valores,array_values($valores));
         } catch (Exception $e) {
             echo $e->getMessage();
         }

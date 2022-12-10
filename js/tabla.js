@@ -302,7 +302,7 @@ function creaFormMasivo(nombreColumnas, tipoDato, obj){
     let btnX=creaBotonX();
     divTodo.appendChild(btnX);
 
-    divTodo.className="c-form--masivo animZoom";
+    divTodo.className="c-form c-form--masivo animZoom";
 
     let divTitulo = document.createElement("div");
     divTitulo.className="c-form__titulo";
@@ -454,32 +454,57 @@ async function updateDatos(tipoDato){
 function borraFila(id, tipoDato, fila) {
     
     return async function () {
-        const data = new FormData();
+
+        /////////////aaaaaaaaaaaaaaaaaaaaaaaaa
+        let realizarAccion = false;
+
+        let seguridad = getModalSeguridad();
+        document.body.appendChild(seguridad);
         
-        data.append("id",id);
-        data.append("tipoDato",tipoDato);
+        let bg = document.createElement('div');
+        bg.setAttribute('class','bgModal')
+        document.body.appendChild(bg);
 
-        /////header{'Content-Type': 'application/x-www-form-urlencoded'}
+        let btnSi = document.getElementById('btnSi');
+        btnSi.onclick= async function () {
+            const data = new FormData();
+            
+            data.append("id",id);
+            data.append("tipoDato",tipoDato);
 
-        let info = await fetch("./api/elimina.php", {
-            method: 'POST',
-            body: data
-         }).then(response => response)
-         .then(function (response) {
+            /////header{'Content-Type': 'application/x-www-form-urlencoded'}
 
-            if (response.ok) {
-                console.log("ole!");      
-                if(response.status==400){
-                    let div = getPanelError('Error','No se puede borrar la fila');
-                    document.body.append(div);
+            let info = await fetch("./api/elimina.php", {
+                method: 'POST',
+                body: data
+            }).then(response => response)
+            .then(function (response) {
+
+                if (response.ok) {
+                    console.log("ole!");      
+                    if(response.status==400){
+                        let div = getPanelError('Error','No se puede borrar la fila');
+                        document.body.append(div);
+                    }else{
+                        fila.parentElement.removeChild(fila);        
+                    }
                 }else{
-                    fila.parentElement.removeChild(fila);        
+                    let div = getPanelError('Error','No se ha encontrado el recurso');
+                    document.body.append(div);
                 }
-            }else{
-                let div = getPanelError('Error','No se ha encontrado el recurso');
-                document.body.append(div);
-            }
-         })
+            });
+            
+            this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement);
+            document.body.removeChild(document.getElementsByClassName("bgModal")[0]);
+            
+        }
+        let btnNo = document.getElementById('btnNo');
+        btnNo.onclick=function () {
+            this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement);
+            document.body.removeChild(document.getElementsByClassName("bgModal")[0]);
+        }
+
+        
     }
 }
 
@@ -927,3 +952,40 @@ function csvToArray(str, delimiter = ",") {
     // return the array
     return arr;
   }
+
+
+function getModalSeguridad(){
+    let div = document.createElement('div');
+    div.setAttribute('class','c-modalSeguro animZoom');
+    
+    let alerta = document.createElement('h2');
+    alerta.innerHTML='Atención!';
+
+    let texto = document.createElement('p');
+    texto.innerHTML='¿Estas segudo de realizar esta acción?';
+
+    
+    let btnSi = document.createElement('span');
+    btnSi.innerHTML='Si';
+    btnSi.setAttribute('id','btnSi');
+    
+    let btnNo = document.createElement('span');
+    btnNo.innerHTML='No';
+    btnNo.setAttribute('id','btnNo');
+    
+    let divBtn = document.createElement('div');
+    divBtn.append(btnSi,btnNo);
+
+    let btnx = creaBotonX();
+    btnx.onclick=function() {
+        document.body.removeChild(this.parentElement);
+        document.body.removeChild(document.getElementsByClassName('bgModal')[0]);
+    }
+
+    div.append(btnx,alerta,texto,divBtn);
+    return div;
+
+/*     let bg = document.createElement('div');
+    bg.setAttribute('class','bgModal');
+ */
+}

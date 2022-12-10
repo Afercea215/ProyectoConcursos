@@ -20,6 +20,7 @@ class RepositorioParticipante{
         }
     }
 
+
     public static function esJuez($id, $idConcurso){
         try {
             
@@ -37,6 +38,7 @@ class RepositorioParticipante{
             echo $e->getMessage();
         }
     }
+    
 
     /* public static function getRol($id, $contrasena){
         try {
@@ -55,6 +57,21 @@ class RepositorioParticipante{
             echo $e->getMessage();
         }
     } */
+    public static function getParticipacion($idParticipante, $idConcurso){
+        try {
+            $sql="select * from participacion where participante_id=$idParticipante and concurso_id=$idConcurso";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+
+            if (!$datos) {
+                throw new Exception("No existe");   
+            }
+            return Participacion::arrayToParticipacion($datos);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
     public static function getById($id){
         try {
@@ -162,9 +179,11 @@ class RepositorioParticipante{
     public static function update(Participante $participante){
         try {
             $valores = $participante->participanteToArray(); 
+            $valores['admin']=$valores['admin']?1:0;
             //GBD::update(RepositorioParticipante::$nomTabla, $array);
             //$sql="update participante set identificador='".$valores['identificador']."', contrasena='".$valores['contrasena']."', admin=".$valores['admin'].", correo='".$valores['correo']."', localizacion=".$valores['localizacion'].", imagen='".$valores['imagen']."', nombre='".$valores['nombre']."' where id=".$valores['id'];
-            GBD::getConexion()->query("update participante set identificador='".$valores['identificador']."', contrasena='".$valores['contrasena']."', admin=".$valores['admin'].", correo='".$valores['correo']."', localizacion=".$valores['localizacion'].", imagen='".$valores['imagen']."', nombre='".$valores['nombre']."' where id=".$valores['id']."");
+            $sql = "update participante set identificador='".$valores['identificador']."', contrasena='".$valores['contrasena']."', admin=".$valores['admin'].", correo='".$valores['correo']."', localizacion=".$valores['localizacion'].", imagen='".$valores['imagen']."', nombre='".$valores['nombre']."' where id=".$valores['id'];
+            GBD::getConexion()->query($sql);
             //$parametros=array_merge($valores,array_values($valores));
         } catch (Exception $e) {
             echo $e->getMessage();

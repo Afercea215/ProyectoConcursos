@@ -20,9 +20,9 @@ class Qso{
     }
     
     public static function arrayToQso(array $array): Qso{
-        $id=$array['id'];
+        $id=$array['id']??1;
         $fecha=$array['fecha']; 
-        $valido=$array['valido']; 
+        $valido=$array['valido']??0; 
         $receptor=$array['receptor_id']; 
         $banda_id=$array['banda_id']; 
         $modo_id=$array['modo_id']; 

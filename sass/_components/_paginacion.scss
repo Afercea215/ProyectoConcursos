@@ -5,23 +5,26 @@
     flex-direction: row;
     align-content: center;
     justify-content: center;
-
+    
     &__actual{
         color: $color-sec;
+        border: none;
         background-color: $color-princip;
         padding: 5% 15%;
         border-radius: getBorder(2);
+        margin: 0 2%;
     }
     &__noactual{
+        border: 1px solid $color-terc;
         color: $color-princip;
         background-color: $color-sec;
-        padding: 5% 15%;
+        padding: 3% 10%;
         border-radius: getBorder(2);
 
         &:disabled{
             color: $color-princip;
             background-color: $color-sec;
-            padding: 5% 15%;
+            padding: 3% 10%;
             border-radius: getBorder(2);
         }
     }

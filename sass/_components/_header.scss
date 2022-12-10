@@ -5,7 +5,7 @@
     width: 100%;
     position: relative;
     top: 0px;
-    padding: 1%;
+    padding: 1% 0%;
 
     &__menu{
         text-align: center;
@@ -47,4 +47,15 @@
             }
         }
     }
+
+    &--admin{
+        background: $color-terc;
+        
+    }
+}
+
+#login{
+    padding: 2%;
+    margin: 0 5%;
+    color: $color-sec;
 }

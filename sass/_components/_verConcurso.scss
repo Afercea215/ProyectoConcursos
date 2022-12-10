@@ -1,0 +1,33 @@
+.c-verConcurso{
+    & h3{
+        color: $color-terc;
+        text-align: center;
+        margin-bottom: 1%;
+        margin-top: 4%;
+    }
+    display: grid;
+    grid-template-areas:
+        "bandas modos"
+        "participantes participantes"
+        "mensajes mensajes";
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+
+    & #bandas{
+        grid-area: bandas;
+    }
+    & #modos{
+        grid-area: modos;
+    }
+    & #participantes{
+        grid-area: participantes;
+    }
+    & #mensajes{
+        grid-area: mensajes;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+}

@@ -47,7 +47,7 @@
             $fini = 'Inicio :'.$concursos[$i]->getFIni()->format('d/m/Y');
             $ffin = '- Fin :'.$concursos[$i]->getFFin()->format('d/m/Y');
             if ($activos) {
-                $boton = '<span class="c-boton c-boton--secundario"><a href="./?menu=concursos&idConcurso='.$concursos[$i]->getId().'&idParticipante='.Sesion::leer("usuario")->getId().'">Incribirse</a></span>'
+                $boton = '<span class="c-boton c-boton--secundario"><a href="./?menu=concursos&idConcurso='.$concursos[$i]->getId().'">Incribirse</a></span>'
                          .'<span class=""><a href="./?menu=verConcurso&id='.$concursos[$i]->getId().'">Ver concurso</a></span>';
             }else{
                 $boton = '<span class="c-boton c-boton--secundario"><a href="./?menu=verConcurso&id='.$concursos[$i]->getId().'">Ver concurso</a></span>';

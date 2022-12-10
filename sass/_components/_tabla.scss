@@ -1,6 +1,7 @@
 .c-tabla{
     border-collapse:separate; 
     background: $color-princip;
+    max-width: 90%;
 
     border: 2px solid $color-princip;
     border-radius: getBorder(1);

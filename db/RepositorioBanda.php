@@ -22,6 +22,19 @@ class RepositorioBanda{
         
     }
 
+    public static function anadeAConcurso($idConcurso, $idBanda){
+        $sql="insert into banda_tiene_concurso values ('".$idBanda."','".$idConcurso."')";
+        try
+        {
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new PDOException("Error insertando registro: ".$e->getMessage());
+        }
+    }
+
     public static function update(Banda $banda){
         try {
             $array = $banda->bandaToArray(); 

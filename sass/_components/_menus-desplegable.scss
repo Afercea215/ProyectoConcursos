@@ -1,0 +1,27 @@
+.c-menu-desplegable {
+    position: relative;
+    display: inline-block;
+
+    &__contenido{
+        display: none;
+        position: absolute;
+        text-align: right;
+        background-color: $color-sec;
+        min-width: 160px;
+        right: 0px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+
+        & a{
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+    }
+}
+
+.show {
+    display:block;
+	animation: append-animate .15s ease-in-out;
+}

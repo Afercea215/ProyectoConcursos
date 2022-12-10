@@ -2,6 +2,20 @@
 class RepositorioConcurso{
     public static $nomTabla="concurso";
 
+    public static function inscribeParticipante($idConcurso, $idParticipante)
+    {
+        $sql="insert into participacion values(null,false,$idConcurso,$idParticipante)";
+        try
+        {
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new PDOException("Error insertando registro: ".$e->getMessage());
+        }
+       
+    }
 
     public static function getPag($pag, $crecimiento, $orderBy='id'){
         try {
@@ -27,14 +41,169 @@ class RepositorioConcurso{
         
     }
 
-    public static function add(Concurso $concurso){
+    public static function getUltimo(){
         try {
-            $array = $concurso->concursoToArray(); 
-             GBD::add(RepositorioConcurso::$nomTabla, $array);
+            $sql = 'select * from concurso order by id desc limit 1';
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            
+            return Concurso::arrayToConcurso($datos);
+
         } catch (Exception $e) {
             echo $e->getMessage();
-        }
-        
+        }  
+    }
+
+
+
+    public static function addBanda($idConcurso, $idBanda){
+        try {
+            $sql = "INSERT INTO BANDA_TIENE_CONCURSO VALUES($idBanda,$idConcurso)";
+                            
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function deleteBanda($idConcurso, $idBanda){
+        try {
+            $sql = "DELETE FROM BANDA_TIENE_CONCURSO WHERE banda_id=$idBanda and concurso_id=$idConcurso";
+                            
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function existeBanda($idConcurso, $idBanda){
+        try {
+            $sql = "select * from concurso 
+                            join banda_tiene_concurso on concurso.id=banda_tiene_concurso.concurso_id
+                            where concurso.id=$idConcurso and banda_tiene_concurso.banda_id=$idBanda";
+
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            
+            if ($datos) {
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function addModo($idConcurso, $idModo, $cartel){
+        try {
+            $sql = "INSERT INTO Modo_TIENE_CONCURSO VALUES($idModo,$idConcurso,'$cartel')";
+                            
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function deleteModo($idConcurso, $idModo){
+        try {
+            $sql = "DELETE FROM MODO_TIENE_CONCURSO WHERE modo_id=$idModo and concurso_id=$idConcurso";
+                            
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function existeModo($idConcurso, $idModo){
+        try {
+            $sql = "select * from concurso 
+                            join modo_tiene_concurso on concurso.id=modo_tiene_concurso.concurso_id
+                            where concurso.id=$idConcurso and modo_tiene_concurso.modo_id=$idModo";
+
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            
+            if ($datos) {
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+
+    public static function addParticipante($idConcurso, $idParticipante){
+        try {
+            $sql = "INSERT INTO participacion VALUES(null, 0, $idConcurso, $idParticipante)";
+                            
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function deleteParticipante($idConcurso, $idParticipante){
+        try {
+            $sql = "DELETE FROM participacion WHERE participante_id=$idParticipante and concurso_id=$idConcurso";
+                            
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+    public static function existeParticipante($idConcurso, $idParticipante){
+        try {
+            $sql = "select * from participacion
+                            where concurso_id=$idConcurso and participante_id=$idParticipante";
+
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            
+            if ($datos) {
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
+
+    public static function add(Concurso $concurso){
+        try {
+            /* ST_GeomFromText() */
+            $array = $concurso->concursoToArray();
+            $sql = 'INSERT INTO concurso (nombre, descrip, fini, ffin, finiInscrip, ffinInscrip, cartel)
+                    VALUES ("'.$array['nombre'].'","'.$array['descrip'].'", "'.$array['fini'].'", "'.$array['ffin'].'", "'.$array['finiInscrip'].'", "'.$array['ffinInscrip'].'", "'.$array['cartel'].'")';
+            GBD::getConexion()->query($sql);
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
     }
 
     public static function update(Concurso $concurso){
@@ -226,6 +395,26 @@ public static function getJueces($id){
     ////////////TO DO
     public static function getGanadoresDiploma(){
 
+    }
+
+    public static function getUltimoActivo(){
+
+        $sql="SELECT * FROM concurso
+        WHERE fini < now()
+        AND ffin > now()
+        ORDER BY fini desc";
+        
+        try
+        {
+            $obj=[];
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);  
+
+            return Concurso::arrayToConcurso($datos);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        } 
     }
 
     public static function getActivos(){

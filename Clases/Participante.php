@@ -30,7 +30,7 @@ class Participante{
         $id=$array[$tabla.'id'];
         $identificador=$array[$tabla.'identificador']; 
         $contrasena=$array[$tabla.'contrasena']; 
-        $admin=$array[$tabla.'admin']; 
+        $admin=($array[$tabla.'admin']==null)?false:$array[$tabla.'admin']; 
         $correo=$array[$tabla.'correo']; 
         $localizacion=new Point($tabla.$array['x'], $tabla.$array['y']); 
         $imagen=$array[$tabla.'imagen']; 

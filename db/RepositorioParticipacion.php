@@ -12,6 +12,47 @@ class RepositorioParticipacion{
         
     }
 
+    public static function setJuez($idParticipante, $idConcurso){
+        try {
+            //$participacion = RepositorioParticipante::getParticipacion($idParticipante,$idConcurso);
+
+            $sql="update participacion set juez=1 where participante_id=$idParticipante and concurso_id=$idConcurso";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+    public static function unSetJuez($idParticipante, $idConcurso){
+        try {
+            //$participacion = RepositorioParticipante::getParticipacion($idParticipante,$idConcurso);
+
+            $sql="update participacion set juez=0 where participante_id=$idParticipante and concurso_id=$idConcurso";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public static function getByConcursoParticipante($idConcurso, $idParticipante){
+        try {
+            
+            $sql="select * from ".self::$nomTabla." where concurso_id=$idConcurso and participante_id=$idParticipante";
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            if ($datos) {
+                return Participacion::arrayToParticipacion($datos);
+            }else{
+                return false;
+            }
+            
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public static function add(Participacion $participacion){
         try {
             $array = $participacion->ParticipacionToArray(); 

@@ -23,6 +23,18 @@ class RepositorioModo{
         
     }
     
+    public static function anadeAConcurso($idConcurso, $idModo, $premio){
+        $sql="insert into modo_tiene_concurso values ('".$idModo."','".$idConcurso."','".$premio."')";
+        try
+        {
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new PDOException("Error insertando registro: ".$e->getMessage());
+        }
+    }
 
     public static function update(Modo $modo){
         try {

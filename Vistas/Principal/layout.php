@@ -11,9 +11,8 @@
     <script src="../../js/listadoParticipantes.js"></script>
     <script src="../../js/listadoModos.js"></script>
     <script src="../../js/listadoBandas.js"></script>
-    <script src="../../js/menuDesplegable.js"></script>
     <script src="../../js/errores.js"></script>
-    <script src="../../js/valida.js"></script>
+    <script src="../../js/cerrarVentana.js"></script>
     
     <link rel="stylesheet" href="../../css/main.css">
 </head>
@@ -21,16 +20,23 @@
 <body>
     <?php
         require_once './Vistas/Principal/header.php';
-    ?>
+        ?>
     <main id="cuerpo">
-    <?php
+        <?php
         require_once './Vistas/Principal/enruta.php';
-    ?>
+        ?>
     </main>
-
+    
     <?php
         require_once './Vistas/Principal/footer.php';
     ?>
+
+    <script src="../../js/menu.js"></script>
+    <script src="../../js/valida.js"></script>
+    <script src="../../js/gestionParticipantesConcurso.js"></script>
+    <script src="../../js/capturaLocalizacion.js"></script>
+    <script src="../../js/capturarFoto.js"></script>
+    <script src="../../js/contadorConcurso.js"></script>
 
 </body>
 

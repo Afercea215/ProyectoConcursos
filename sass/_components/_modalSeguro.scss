@@ -1,0 +1,44 @@
+.c-modalSeguro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    z-index: 500;
+    position: absolute;
+    text-align: center;
+    width: 400px;
+    height: 250px;
+    top: 250px;
+    background: $color-princip;
+    border-radius: getBorder(2);
+    color: $color-sec;
+
+    & img{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 25px;
+    }
+
+    & h2{
+        color: $color-sec;
+        font-size: 200%;
+        font-weight: bold;
+    }
+    & div{
+        margin-top: 10%;
+        width: 50%;
+    }
+
+    #btnSi{
+        padding: 15px 30px;
+        border-radius: getBorder(2);
+        background-color: red;
+    }
+    #btnNo{
+        padding: 15px 30px;
+        border-radius: getBorder(2);
+        border: solid 2px $color-sec;
+    }
+}

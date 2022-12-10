@@ -1,7 +1,7 @@
 <?php
     $valida=new Validacion();
     $errorLogin="";
-    if(isset($_POST['submit']))
+    if(isset($_POST) && isset($_POST['usuario']) && isset($_POST['contrasena']))
     {
         $valida->Requerido('usuario');
         $valida->Requerido('contrasena');
@@ -27,10 +27,13 @@
         <input type='password' class='form-control <?php $valida->imprimeClaseInputError('contrasena')?> val_required' name='contrasena' placeholder='Contraseña'
             required='required'>
         <?= $valida->ImprimirError('contrasena') ?>
-        <button type='submit' name='submit' class='c-boton c-boton--secundario g-marg-top--1' id="btnIniciaSesion">Iniciar Sesion</button>
+        <button type='submit' class='c-boton c-boton--secundario g-marg-top--1' id="btnIniciaSesion">Iniciar Sesion</button>
         <a href='./?menu=registro'>Crear una Cuenta</a>
+
         <div class="g-pad-top--0">
             <input type='checkbox' name='recuerdame' value="">
             <span>Recuerdame</span>
         </div>
+
+        <span>He olvidado mi contraseña</span>
 </form>

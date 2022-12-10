@@ -1,7 +1,7 @@
 <?php
     //include_once("./helper/validacion.php");
     $valida=new Validacion();
-    if(isset($_POST['submit']))
+    if(isset($_POST['usuario']) && isset($_POST['contrasena']) && isset($_POST['email']) && isset($_POST['local-x']) && isset($_POST['local-y']))
     {
         $valida->validaNombreUsuario('usuario',$_POST['usuario']);
         $valida->Requerido('contrasena');
@@ -23,7 +23,7 @@
                 $array['identificador']=$_POST['identificador'];
                 $array['admin']=false;
 
-                if (!empty($_FILES) && $_FILES['imagen']['type']=="image/jpeg" || $_FILES['imagen']['type']=="image/png") {
+                if (!empty($_FILES) && $_FILES['imagen']['type']=="image/jpeg" || $_FILES['imagen']['type']=="image/png" || $_FILES['imagen']['type']=="application/octet-stream") {
                     $path = $_FILES['imagen']['tmp_name'];
                     $array['imagen']=Imagenes::imgToBase64($path);
                 }else { 
@@ -67,20 +67,28 @@
     
     <h3>Coordenadas</h3>
     <p>Cordenada Eje X</p>
-    <input type='number' class='<?php $valida->imprimeClaseInputError('local-x')?> val_required val_num' name='local-x' placeholder='Cordenadas X' value='<?php if (isset($_POST['usuario'])){
+    <input type='number' class='<?php $valida->imprimeClaseInputError('local-x')?> val_required val_num' name='local-x' id='local-x' placeholder='Cordenadas X' value='<?php if (isset($_POST['usuario'])){
         echo $_POST['local-x'];
         } ?>'>
     <?= $valida->ImprimirError('local-x') ?>
     <p>Cordenada Eje Y</p>
-    <input type='number' class='<?php $valida->imprimeClaseInputError('local-y')?> val_required val_num' name='local-y' placeholder='Cordenadas Y' value='<?php if (isset($_POST['usuario'])){
+    <input type='number' class='<?php $valida->imprimeClaseInputError('local-y')?> val_required val_num' name='local-y' id='local-y' placeholder='Cordenadas Y' value='<?php if (isset($_POST['usuario'])){
         echo $_POST['usuario'];
         } ?>'>
     <?= $valida->ImprimirError('local-y') ?>
+    <input type="button" id="capturaLocalizacion" value="Capturar Localizacion" class="c-boton c-boton--secundario">
 
     <p>Foto de perfil</p>
-    <input type='file' class='<?php $valida->imprimeClaseInputError('imagen')?>' name='imagen'>
+    
+    <video id="video" playsinline autoplay></video>
+    <!-- Trigger canvas web API -->
+    <canvas id="canvas" width="300" height="200" style="display: none;"></canvas>
+        <button id="btnFoto" class="c-boton c-boton--secundario">Capturar</button>
+
+
+    <input type='file' class='<?php $valida->imprimeClaseInputError('imagen')?>' name='imagen' id="inpFile">
     <?= $valida->ImprimirError('imagen') ?>
     <!-- onclick="validaForm(this)" -->
-    <button type='submit' name='submit' class='c-boton c-boton--secundario g-marg-top--2' id="btnRegistro">Crear Cuenta</button>
+    <button type='submit' class='c-boton c-boton--secundario g-marg-top--2' id="btnRegistro">Crear Cuenta</button>
     <a href='./?menu=login' class=''>Iniciar Sesion</a>
 </form>
