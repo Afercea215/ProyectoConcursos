@@ -1,7 +1,7 @@
-<?php 
+<?php
 include_once "../autoCargadores/autoCargador.php";
 if (Sesion::estaLogeado()) {
-    if (isset($_POST) && isset($_POST['id']) && isset($_POST['tipoDato'])) {
+    if (isset($_POST)) {
         $id = $_POST['id'];
         $tipoDato = $_POST['tipoDato'];
         try {
@@ -15,5 +15,4 @@ if (Sesion::estaLogeado()) {
 } else{
     header('location ./?menu=login');
 }
-
 ?>

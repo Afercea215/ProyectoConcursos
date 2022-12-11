@@ -43,9 +43,13 @@
         header('location:./?menu=login');
     }
 ?>
-<a href="./?menu=datosPersonales&accion=edita" class="c-boton">Editar Datos</a>
+<div id="opciones">
+    <a href="./?menu=datosPersonales&accion=edita" class="c-boton">Editar Datos</a>
+    <span class="c-boton" id="imprime">Imprimir Datos</span>
+    <span class="c-boton" id="descarga">Descargar Datos</span>
+</div>
 
-<div class="c-perfil">
+<div class="c-perfil" id="perfil">
     <div class="c-perfil__logo">
         <img src="<?php echo $datos->getImagen() ?>" alt="">
         <h2><?php echo $datos->getNombre() ?></h2>

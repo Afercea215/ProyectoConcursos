@@ -37,10 +37,12 @@ Tabla.prototype.creaBotonesPag=function () {
     btnAvanza.setAttribute('type','button');
     btnAvanza.setAttribute('id','btnAvanza');
     btnAvanza.value=">";
+    debugger
+    
     btnAvanza.className="c-paginacion__noactual";
     btnAvanza.onclick=this.cambiaPagina(this);
     
-    if (this.indice==maxPag) {
+    if (this.indice==maxPag+1) {
         btnAvanza.disabled=true;
     }else{
         btnAvanza.disabled=false;
@@ -73,6 +75,10 @@ Tabla.prototype.cambiaPagina=function(obj){
         } else{
             maxPag = obj.datos.length/obj.tamañoPag;
         }
+        
+        if (maxPag<=1) {
+            document.getElementById("btnAvanza").disabled=true;
+        }
 
         if (this.value==">") {
             document.getElementById("btnRetrocede").disabled=false;
@@ -103,8 +109,8 @@ Tabla.prototype.actualizaPagina=function(obj=this){
         obj.tBody.rows[i].removeChild(obj.tBody.rows[i].cells[obj.tBody.rows[i].cells.length-1]);
     }
 
-    let ultimaCelda = obj.tHead.rows[0].cells[obj.tHead.rows[0].cells.length-1];
-    obj.tHead.rows[0].removeChild(ultimaCelda);
+    /* let ultimaCelda = obj.tHead.rows[0].cells[obj.tHead.rows[0].cells.length-1];
+    obj.tHead.rows[0].removeChild(ultimaCelda); */
     
     obj.pintar();
 }
@@ -115,7 +121,7 @@ Tabla.prototype.creaTHead=function(nombreColum,obj=this){
 
     for (let i = 0; i < nombreColum.length; i++) {
         let th = document.createElement("th");
-        th.innerHTML=nombreColum[i];
+        th.innerHTML=nombreColum[i] + ' ▼';
         tr.appendChild(th);  
     }
     
@@ -243,19 +249,19 @@ Tabla.prototype.añadeFunciones=function () {
 Tabla.prototype.creaBotonNuevo=function(obj=this){
     let div = document.createElement('div');
     div.setAttribute('id','divNuevo');
-    div.classNam='c-nuevo';
+    div.className='c-nuevo';
 
     let btn = document.createElement('span');
     btn.innerHTML="+ Nuevo";
     btn.setAttribute('id', 'btnNuevo');
-    btn.className="c-boton g-marg-bottom--1";
+    btn.className="c-boton";
     btn.onclick=imprimeFormularioNuevo(obj.nombreColumBd, obj.tipoDato);
     
     if (obj.subidaMasiva) {
         let btnMasiva = document.createElement('span');
         btnMasiva.innerHTML="+ Subida Masiva";
         btnMasiva.setAttribute('id', 'btnMasiva');
-        btnMasiva.className="c-boton g-marg-bottom--1";
+        btnMasiva.className="c-boton";
         btnMasiva.onclick=imprimeFormularioMasivo(obj.nombreColumBd, obj.tipoDato, obj);
     
         div.append(btn,btnMasiva);

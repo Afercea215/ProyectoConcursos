@@ -15,6 +15,9 @@ if (isset($_GET['menu'])) {
     if ($_GET['menu'] == "listadoParticipantes") {
         require_once './Vistas/Mantenimiento/listadoParticipantes.php';
     }
+    if ($_GET['menu'] == "resultado") {
+        require_once './Vistas/Mantenimiento/resultado.php';
+    }
     if ($_GET['menu'] == "listadoModos") {
         require_once './Vistas/Mantenimiento/listadoModo.php';
     }
@@ -35,6 +38,9 @@ if (isset($_GET['menu'])) {
     }
     if ($_GET['menu'] == "datosPersonales") {
         require_once './Vistas/Mantenimiento/datosPersonales.php';
+    }
+    if ($_GET['menu'] == "resultados") {
+        require_once './Vistas/Mantenimiento/resultado.php';
     }
 }
     //Añadir otras rutas

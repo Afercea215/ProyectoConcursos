@@ -49,6 +49,16 @@ class RepositorioQso{
     }
     
 
+    public static function aprobarMensaje($id){
+        try {
+            $sql = "update qso set valido=1 where id=$id";
+            GBD::getConexion()->query($sql);
+            //$parametros=array_merge($valores,array_values($valores));
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        
+    }
     public static function update(Qso $qso){
         try {
             $valores = $qso->qsoToArray(); 

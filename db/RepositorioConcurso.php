@@ -172,6 +172,26 @@ class RepositorioConcurso{
         }  
     }
 
+    public static function participanteEstaInscrito($idConcurso, $idParticipante){
+        try {
+            $sql = "select * from participacion
+                            where concurso_id=$idConcurso and participante_id=$idParticipante";
+
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+            
+            if ($datos) {
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+
     public static function existeParticipante($idConcurso, $idParticipante){
         try {
             $sql = "select * from participacion
@@ -333,6 +353,35 @@ public static function getJueces($id){
             }
             
             return $mensajes;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }  
+    }
+    public static function getGandorModo($idModo,$idConcurso)
+    {
+
+        $sql="
+        select count(*)'cantidad',participacion.participante_id from participacion join qso on qso.participacion_id=participacion.id
+                                    join concurso on concurso.id=participacion.concurso_id
+                                    join modo_tiene_concurso on modo_tiene_concurso.concurso_id=concurso.id
+                                    
+                                    where concurso.id=$idConcurso and modo_tiene_concurso.modo_id=$idModo
+                                    group by participacion.participante_id
+                                    order by 'cantidad';";
+        
+        try
+        {
+            $consulta=GBD::getConexion()->prepare($sql);
+            $consulta->execute();
+            $datos=$consulta->fetch(PDO::FETCH_ASSOC);
+
+            if ($datos) {
+                return $datos['participante_id'];
+            }else{
+                return false;
+            }
+            
+            return $datos;
         } catch (Exception $e) {
             echo $e->getMessage();
         }  

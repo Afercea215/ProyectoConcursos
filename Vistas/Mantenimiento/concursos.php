@@ -1,7 +1,12 @@
 <?php
-    //inscribir
-    if (isset($_GET['idConcurso']) && isset($_GET['idParticipante'])) {
-        header('location: ./controladores/inscribeParticipante.php?idParticipante='.$_GET['idParticipante'].'&idConcurso='.$_GET['idConcurso']);
+    //si quiere inscribe pero no esta logueado lo llevo a log
+    if (isset($_GET['accion']) && $_GET['accion']=='inscribe' && !Sesion::estaLogeado()) {
+        header('location:./?menu=login');
+    }
+
+    //inscribe
+    if (isset($_GET['idConcurso']) && isset($_GET['accion']) && $_GET['accion']=='inscribe') {
+        header('location: ./controladores/inscribeParticipante.php?idParticipante='.Sesion::leer('usuario')->getId().'&idConcurso='.$_GET['idConcurso']);
     }
 
     //filtar por finalizados o activos
@@ -47,8 +52,13 @@
             $fini = 'Inicio :'.$concursos[$i]->getFIni()->format('d/m/Y');
             $ffin = '- Fin :'.$concursos[$i]->getFFin()->format('d/m/Y');
             if ($activos) {
-                $boton = '<span class="c-boton c-boton--secundario"><a href="./?menu=concursos&idConcurso='.$concursos[$i]->getId().'">Incribirse</a></span>'
-                         .'<span class=""><a href="./?menu=verConcurso&id='.$concursos[$i]->getId().'">Ver concurso</a></span>';
+                if (Sesion::estaLogeado() && RepositorioConcurso::participanteEstaInscrito($concursos[$i]->getId(),Sesion::leer('usuario')->getId())) {
+                    $boton ='<span class="c-boton c-boton--secundario">Estas inscrito</span>'.
+                    '<span class=""><a href="./?menu=verConcurso&id='.$concursos[$i]->getId().'">Ver concurso</a></span>';
+                }else{
+                    $boton = '<span class="c-boton c-boton--secundario"><a href="./?menu=concursos&idConcurso='.$concursos[$i]->getId().'&accion=inscribe">Incribirse</a></span>'
+                            .'<span class=""><a href="./?menu=verConcurso&id='.$concursos[$i]->getId().'">Ver concurso</a></span>';
+                }
             }else{
                 $boton = '<span class="c-boton c-boton--secundario"><a href="./?menu=verConcurso&id='.$concursos[$i]->getId().'">Ver concurso</a></span>';
             }

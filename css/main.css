@@ -1462,6 +1462,16 @@ h3 {
   bottom: 10px;
 }
 
+.c-nuevo {
+  margin-bottom: 2%;
+  width: 35%;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .c-tabla {
   border-collapse: separate;
   background: #3BB0C0;
@@ -1499,6 +1509,9 @@ h3 {
 }
 .c-tabla tbody tr td img {
   max-height: 100%;
+}
+.c-tabla tbody tr td a img {
+  max-height: 70%;
 }
 
 .c-paginacion {
@@ -1550,12 +1563,13 @@ h3 {
   font-size: 125%;
 }
 .c-panel__texto {
+  min-height: 150px;
   display: flex;
   flex: 2;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding: 10% 5%;
+  padding: 1% 5%;
   justify-content: space-evenly;
   text-align: center;
 }
@@ -1567,7 +1581,7 @@ h3 {
   font-size: 75%;
 }
 .c-panel__texto .c-boton {
-  margin-top: 2%;
+  margin-top: 10%;
 }
 .c-panel img {
   height: 250px;
@@ -1767,6 +1781,13 @@ h3 {
 .c-perfil__otros label {
   font-size: 125%;
   font-weight: bold;
+}
+
+#opciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 125%;
 }
 
 .c-verConcurso {

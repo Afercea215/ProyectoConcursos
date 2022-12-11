@@ -1,4 +1,10 @@
 <?php
+//si quiere inscribirse
+if (isset($_GET['idConcurso']) && isset($_GET['accion']) && $_GET['accion']=='inscribe') {
+    RepositorioConcurso::inscribeParticipante($_GET['idConcurso'], Sesion::leer('usuario')->getId());
+}
+
+
 if (Sesion::estaLogeado() && Sesion::esAdmin()) {
     
     echo '<h2 class="g-marg-bottom--3">Listado Concursos</h2>';
@@ -211,18 +217,21 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
     header('location:/?menu=login');
 }
 ?>
-<a href="./?menu=listadoConcursos&accion=nuevo"><span class="c-boton">+ Nuevo</span></a>
+<div class="c-nuevo">
+    <a href="./?menu=listadoConcursos&accion=nuevo"><span class="c-boton">+ Nuevo</span></a>
+    <a href="./?menu=listadoConcursos&accion=subidaMasiva"><span class="c-boton">+ Subida Masiva</span></a>
+</div>
 <table class="c-tabla">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Fin</th>
-            <th>Fecha inicio Inscrip</th>
-            <th>Fecha fin Inscrip</th>
-            <th>Cartel</th>
+            <th><a href="./?menu=listadoConcursos&orderBy=id&pag=1">Id ▼</a></th>
+            <th><a href="./?menu=listadoConcursos&orderBy=nombre&pag=1">Nombre ▼</th>
+            <th><a href="./?menu=listadoConcursos&orderBy=descrip&pag=1">Descripción ▼</th>
+            <th><a href="./?menu=listadoConcursos&orderBy=fini&pag=1">Fecha Inicio ▼</th>
+            <th><a href="./?menu=listadoConcursos&orderBy=ffin&pag=1">Fecha Fin ▼</th>
+            <th><a href="./?menu=listadoConcursos&orderBy=finiInscrip&pag=1">Fecha inicio Inscrip ▼</th>
+            <th><a href="./?menu=listadoConcursos&orderBy=ffinInscrip&pag=1">Fecha fin Inscrip ▼</th>
+            <th><a href="./?menu=listadoConcursos&orderBy=cartel&pag=1">Cartel ▼</th>
         </tr>
     </thead>
     <tbody>
@@ -245,9 +254,20 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
             echo '</tr>';
         }
         ?>
+        
     </tbody>
 </table>
 
+<?php
+    $maxPag = intval(sizeof($concursos)/5+1);
+    $pagAnterior = $pag<=1?1:$pag-1;
+    $pagSiguiente = $pag>=$maxPag?$maxPag:$pag+1;
+ b      echo '<div class="c-paginacion">';
+    echo '<span class="c-paginacion__noactual"><a href="./?menu=listadoConcursos&OrderBy=$orderBy&pag='.$pagAnterior.'"><</a></span>';
+    echo '<span class="c-paginacion__actual">'.$pag.'</span>';
+    echo '<span class="c-paginacion__noactual"><a href="./?menu=listadoConcursos&OrderBy=$orderBy&pag='.$pagSiguiente.'">></a></span>';
+    echo '</div>';
+?>
 
 <?php
 /* $_SERVER['REQUEST_URI'] */

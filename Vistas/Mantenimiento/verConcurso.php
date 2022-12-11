@@ -44,7 +44,7 @@
 <h2 class="g-marg-bottom--0">Concurso <?php echo $concurso->getNombre() ?></h2>
 <?php
     $concurso = RepositorioConcurso::getById($_GET['id']);
-    echo '<span id="contador" value="'.$concurso->getFFin()->format('Y-m-d H:i:s').'"></span>';
+    echo '<span id="contador" data-fecha="'.$concurso->getFFin()->format('Y-m-d H:i:s').'"></span>';
 
     if ($concurso->getCartel()=='') {
         $imagen = '../../img/cartelDefault.png';
@@ -55,6 +55,12 @@
     $desc = $concurso->getDescrip();
     $fini = 'Inicio :'.$concurso->getFIni()->format('d/m/Y');
     $ffin = '- Fin :'.$concurso->getFFin()->format('d/m/Y');
+
+    $btnResult = "";
+
+    if ($concurso->getFfin() < (new Datetime())) {
+        $btnResult = '<a href="./?menu=resultados&id='.$concurso->getId().'"><span class="c-boton c-boton--secundario g-marg-top--2">Ver resultados</span></a>';
+    }
     
     echo <<<EOT
             <div class='c-panel c-panel--pequeno'>
@@ -65,6 +71,7 @@
                     <span>$fini</span>
                     <span>$ffin</span>
                 </div>
+                $btnResult
             </div>
             <img src="$imagen">
         </div>
@@ -73,6 +80,46 @@
 <!-- imprimir datos de un concurso
  -->
  <div class="c-verConcurso">
+     <section id="bandas">
+    
+        <h3>Bandas</h3>
+        <!-- Tabla bandas -->
+        <?php if (!$bandas) {
+            echo '<h3 class="errorTexto">Este concurso no tiene modos actualmente</h3>';
+        }else{
+            echo <<<EOT
+            <table class="c-tabla">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Distancia</th>
+                        <th>Rango Minimo</th>
+                        <th>Rango Maximo</th>
+                    </tr>
+                </thead>
+                <tbody>
+            EOT;
+            //datos tabla
+            for ($i=0; $i <sizeof($bandas) ; $i++) { 
+                echo '<tr>';
+                echo '<td>'.$bandas[$i]->getId().'</td>';
+                echo '<td>'.$bandas[$i]->getDistancia().'</td>';
+                echo '<td>'.$bandas[$i]->getRangoMin().'</td>';
+                echo '<td>'.$bandas[$i]->getRangoMin().'</td>';
+                //echo '<td><a href="./?menu=verConcurso&id='.$bandas[$i]->getId().'"><img src="../../img/iconoOjo.png"></a>';
+                //echo '<td><a href="./?menu=listadoConcursos&accion=edita&id='.$bandas[$i]->getId().'"><img src="../../img/iconoLapiz.png"></a>';
+                // echo '<td><a href="./controladores/eliminaConcurso.php?id='.$bandas[$i]->getId().'"><img src="../../img/logoPapelera.png"></a>';
+            
+                echo '</tr>';
+            }
+    
+            echo '
+            </tbody>
+            </table>';
+        }
+        ?>
+     </section>
+
      <section id="bandas">
     
         <h3>Bandas</h3>
@@ -202,7 +249,12 @@
     <section id="mensajes">
         <h3>Mensajes</h3>
         <!-- tabla qsos -->
-        <?php if (!($qsos)) {
+        <?php
+        if (Sesion::estaLogeado() && RepositorioConcurso::participanteEstaInscrito($_GET['id'],Sesion::leer('usuario')->getId())) {
+            echo '<span>';
+        }
+        
+        if (!($qsos)) {
             echo '<h3 class="errorTexto">Este concurso no tiene mensajes actualmente</h3>';
         }else{
             echo <<<EOT
@@ -228,14 +280,15 @@
                     echo '<td>'.$qsos[$i]['banda'][0].'m Rango : '.$qsos[$i]['banda'][1].' - '.$qsos[$i]['banda'][2].'</td>';
                     echo '<td>'.$qsos[$i]['modo'].'</td>';
                     echo '<td>'.$qsos[$i]['emisor'].'</td>';
-                    echo '<td>'.'to do'.'</td>';
+                    $receptor = RepositorioParticipante::getById($qsos[$i]['qso']->getReceptor_id());
+                    echo '<td>'.$receptor->getNombre().'</td>';
                     echo '<td>'.(($qsos[$i]['qso']->getValido())?'Si':'No').'</td>';
                     if (Sesion::estaLogeado() && Sesion::esAdmin()) {
                         echo '<td><a href="./?menu=verConcurso&id='.$_GET['id'].'&accion=eliminaMensaje&idMensaje='.$qsos[$i]['qso']->getId().'"><img src="../../img/logoPapelera.png"></a>';
                     }
-                    //si es juez del este concurso
-                    if (Sesion::estaLogeado() && RepositorioParticipante::esJuez(Sesion::leer('usuario')->getId(),$_GET['id'])) {
-                        echo '<td><a href="./controladores/aprobarMensaje.php?id='.$qsos[$i]['qso']->getId().'"><img src="../../img/aprobar.png"></a>';
+                    //si es juez del este concurso y receptor de ese mensaje y mensaje no valido
+                    if (Sesion::estaLogeado() && RepositorioParticipante::esJuez(Sesion::leer('usuario')->getId(),$_GET['id']) && $receptor->getId()==Sesion::leer('usuario')->getId() && !$qsos[$i]['qso']->getValido()) {
+                        echo '<td><a href="./controladores/aprobarMensaje.php?id='.$qsos[$i]['qso']->getId().'&idConcurso='.$concurso->getId().'"><img src="../../img/aprobar.png"></a>';
                     }
                     //echo '<td><a href="./?menu=verConcurso&id='.$bandas[$i]->getId().'"><img src="../../img/iconoOjo.png"></a>';
                     //echo '<td><a href="./?menu=listadoConcursos&accion=edita&id='.$bandas[$i]->getId().'"><img src="../../img/iconoLapiz.png"></a>';
