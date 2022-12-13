@@ -21,7 +21,14 @@ class Participante{
         $this->setNombre($nombre);
 
     }
-    
+        
+    /**
+     * arrayToParticipante
+     * Convierte un array a un obj Participante
+     * @param  mixed $array
+     * @param  mixed $incluyeTabla
+     * @return Participante
+     */
     public static function arrayToParticipante(array $array, $incluyeTabla=false): Participante{
         $tabla="";
         if ($incluyeTabla) {
@@ -38,8 +45,13 @@ class Participante{
         
         return new Participante($id, $identificador, $contrasena, $admin, $correo, $localizacion, $nombre, $imagen);
     }
-
-    public function participanteToArray (){
+    
+    /**
+     * participanteToArray
+     * Convierte un participante a un array
+     * @return array
+     */
+    public function participanteToArray():array{
             $array['id']=$this->getId();
             $array['identificador']=$this->getIdentificador();
             $array['contrasena']=$this->getContrasena();

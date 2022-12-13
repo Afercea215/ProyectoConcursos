@@ -3,7 +3,7 @@
 require_once '../autoCargadores/autoCargador.php';
 Sesion::iniciar();
 
-if (Sesion::estaLogeado()) {
+if (Sesion::estaLogeado() && Sesion::esAdmin()) {
     if (isset($_POST)) {
         try {
             for ($i=0; $i < sizeof($_POST['nombre']) ; $i++) {

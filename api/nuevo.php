@@ -3,7 +3,7 @@
     $valido=true;    
     Sesion::iniciar();
 
-    if (Sesion::estaLogeado()) {
+    if (Sesion::estaLogeado() && Sesion::esAdmin()) {
         if (isset($_GET['tipo'])) {
             if (isset($_POST)) {
                 try {

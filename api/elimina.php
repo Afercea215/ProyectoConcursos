@@ -1,7 +1,7 @@
 <?php
 include_once "../autoCargadores/autoCargador.php";
 Sesion::iniciar();
-if (Sesion::estaLogeado()) {
+if (Sesion::estaLogeado() && Sesion::esAdmin()) {
     if (isset($_POST)) {
         $id = $_POST['id'];
         $tipoDato = $_POST['tipoDato'];

@@ -146,7 +146,17 @@ class GBD
          
     }
 
-
+    
+    /**
+     * getPag
+     * Consigue la pagina de una tabla
+     * @param  mixed $tabla
+     * @param  mixed $pag
+     * @param  mixed $orderBy
+     * @param  mixed $crecimiento
+     * @param  mixed $tama
+     * @return void
+     */
     public static function getPag($tabla, $pag, $orderBy, $crecimiento, $tamañoPag=5)
     {
         $limit=$tamañoPag;
