@@ -2,6 +2,14 @@
 class RepositorioConcurso{
     public static $nomTabla="concurso";
 
+        
+    /**
+     * inscribeParticipante
+     * Incribe un participante en un concurso en especifico
+     * @param  mixed $idConcurso
+     * @param  mixed $idParticipante
+     * @return void
+     */
     public static function inscribeParticipante($idConcurso, $idParticipante)
     {
         $sql="insert into participacion values(null,false,$idConcurso,$idParticipante)";
@@ -17,7 +25,16 @@ class RepositorioConcurso{
        
     }
 
-    public static function getPag($pag, $crecimiento, $orderBy='id'){
+        
+    /**
+     * getPag
+     * Devuelve la pagina indicada de los concurso, indicando el orden y crecimiento
+     * @param  mixed $pag Pagina a devolver
+     * @param  mixed $crecimiento ASC o DESC
+     * @param  mixed $orderBy columna por la que se quiere ordenar
+     * @return array
+     */
+    public static function getPag($pag, $crecimiento, $orderBy='id'):array{
         try {
             $obj = GBD::getPag(RepositorioConcurso::$nomTabla, $pag, $orderBy, $crecimiento, $tamañoPag=5);
             $concursos=[];
@@ -31,7 +48,15 @@ class RepositorioConcurso{
         
     }
 
-    public static function getById($id){
+        
+        
+    /**
+     * getById
+     * Devuelve un concurso por la id
+     * @param  mixed $id
+     * @return Concurso
+     */
+    public static function getById($id):Concurso{
         try {
             $obj = GBD::findById(RepositorioConcurso::$nomTabla,$id);
             return Concurso::arrayToConcurso($obj);    //code...
@@ -56,7 +81,14 @@ class RepositorioConcurso{
     }
 
 
-
+    
+    /**
+     * addBanda
+     * Añade una banda al concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idBanda
+     * @return void
+     */
     public static function addBanda($idConcurso, $idBanda){
         try {
             $sql = "INSERT INTO BANDA_TIENE_CONCURSO VALUES($idBanda,$idConcurso)";
@@ -69,6 +101,14 @@ class RepositorioConcurso{
         }  
     }
 
+        
+    /**
+     * deleteBanda
+     * Borra una banda del concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idBanda
+     * @return void
+     */
     public static function deleteBanda($idConcurso, $idBanda){
         try {
             $sql = "DELETE FROM BANDA_TIENE_CONCURSO WHERE banda_id=$idBanda and concurso_id=$idConcurso";
@@ -81,7 +121,15 @@ class RepositorioConcurso{
         }  
     }
 
-    public static function existeBanda($idConcurso, $idBanda){
+        
+    /**
+     * existeBanda
+     * Comprueba si una banda esta participando en un concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idBanda
+     * @return bool true | false
+     */
+    public static function existeBanda($idConcurso, $idBanda):bool{
         try {
             $sql = "select * from concurso 
                             join banda_tiene_concurso on concurso.id=banda_tiene_concurso.concurso_id
@@ -102,6 +150,15 @@ class RepositorioConcurso{
         }  
     }
 
+        
+    /**
+     * addModo
+     * Añade un modo a el concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idModo
+     * @param  mixed $cartel
+     * @return void
+     */
     public static function addModo($idConcurso, $idModo, $cartel){
         try {
             $sql = "INSERT INTO Modo_TIENE_CONCURSO VALUES($idModo,$idConcurso,'$cartel')";
@@ -114,6 +171,14 @@ class RepositorioConcurso{
         }  
     }
 
+        
+    /**
+     * deleteModo
+     * Borra un modo de un concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idModo
+     * @return void
+     */
     public static function deleteModo($idConcurso, $idModo){
         try {
             $sql = "DELETE FROM MODO_TIENE_CONCURSO WHERE modo_id=$idModo and concurso_id=$idConcurso";
@@ -126,7 +191,15 @@ class RepositorioConcurso{
         }  
     }
 
-    public static function existeModo($idConcurso, $idModo){
+        
+    /**
+     * existeModo
+     *  Comprueba si existe el modo en un concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idModo
+     * @return bool
+     */
+    public static function existeModo($idConcurso, $idModo):bool{
         try {
             $sql = "select * from concurso 
                             join modo_tiene_concurso on concurso.id=modo_tiene_concurso.concurso_id
@@ -147,7 +220,14 @@ class RepositorioConcurso{
         }  
     }
 
-
+    
+    /**
+     * addParticipante
+     * Añade una participacion de un participante a un concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idParticipante
+     * @return void
+     */
     public static function addParticipante($idConcurso, $idParticipante){
         try {
             $sql = "INSERT INTO participacion VALUES(null, 0, $idConcurso, $idParticipante)";
@@ -159,7 +239,14 @@ class RepositorioConcurso{
             echo $e->getMessage();
         }  
     }
-
+    
+    /**
+     * deleteParticipante
+     * Borra la participacion de un participante a un concurso
+     * @param  mixed $idConcurso
+     * @param  mixed $idParticipante
+     * @return void
+     */
     public static function deleteParticipante($idConcurso, $idParticipante){
         try {
             $sql = "DELETE FROM participacion WHERE participante_id=$idParticipante and concurso_id=$idConcurso";
@@ -171,8 +258,15 @@ class RepositorioConcurso{
             echo $e->getMessage();
         }  
     }
-
-    public static function participanteEstaInscrito($idConcurso, $idParticipante){
+    
+    /**
+     * participanteEstaInscrito
+     * Comprueba si un participante esta inscrito
+     * @param  mixed $idConcurso
+     * @param  mixed $idParticipante
+     * @return bool
+     */
+    public static function participanteEstaInscrito($idConcurso, $idParticipante):bool{
         try {
             $sql = "select * from participacion
                             where concurso_id=$idConcurso and participante_id=$idParticipante";
@@ -212,7 +306,13 @@ class RepositorioConcurso{
         }  
     }
 
-
+    
+    /**
+     * add
+     * Inserta un concuros a la bd
+     * @param  mixed $concurso
+     * @return void
+     */
     public static function add(Concurso $concurso){
         try {
             /* ST_GeomFromText() */
@@ -225,7 +325,13 @@ class RepositorioConcurso{
             echo $e->getMessage();
         }  
     }
-
+    
+    /**
+     * update
+     * Actualiza un concurso
+     * @param  mixed $concurso
+     * @return void
+     */
     public static function update(Concurso $concurso){
         try {
             $array = $concurso->concursoToArray(); 
@@ -235,8 +341,14 @@ class RepositorioConcurso{
         }
         
     }
-
-        public static function delete($id){
+    
+    /**
+     * delete
+     * Borra un concurso
+     * @param  mixed $id
+     * @return void
+     */
+    public static function delete($id){
         try {
              GBD::delete(RepositorioConcurso::$nomTabla, $id);
         } catch (Exception $e) {
@@ -244,15 +356,27 @@ class RepositorioConcurso{
         }
         
     }
-
-    public static function getAll(){
+    
+    /**
+     * getAll
+     * Get todos los concursos de la bd
+     * @return array de Concursos
+     */
+    public static function getAll():array{
         $concursos = GBD::getAll("concurso");
         for ($i=0; $i <sizeof($concursos); $i++) { 
             $concursosObj[]=Concurso::arrayToConcurso($concursos[$i]);
         }
         return $concursosObj;
     }
-public static function getJueces($id){
+    
+    /**
+     * getJueces
+     * Consigo los jueces del concurso
+     * @param  mixed $id
+     * @return array
+     */
+    public static function getJueces($id):array{
         $partipantes = RepositorioConcurso::getParticipantes($id);
         for ($i=0; $i <sizeof($partipantes); $i++) { 
             if ($partipantes[$i]['juez']) {
@@ -261,7 +385,13 @@ public static function getJueces($id){
         }
         return $array;
     }
-
+    
+    /**
+     * getBandas
+     * Consigo las bandas de un concurso
+     * @param  mixed $id
+     * @return void
+     */
     public static function getBandas($id){
 
         $sql="SELECT banda.* FROM banda join banda_tiene_concurso on banda.id=banda_tiene_concurso.banda_id where concurso_id=".$id;
@@ -289,7 +419,14 @@ public static function getJueces($id){
         }
     }
 
-    public static function getModos($id){
+        
+    /**
+     * getModos
+     * Consigo los modos de un concurso
+     * @param  mixed $id
+     * @return array
+     */
+    public static function getModos($id):array{
         $sql="select modo.*, modo_tiene_concurso.premio from modo join modo_tiene_concurso on modo.id=modo_tiene_concurso.modo_id where modo_tiene_concurso.concurso_id=".$id;
         try
         {
@@ -306,12 +443,18 @@ public static function getJueces($id){
             echo $e->getMessage();
         }       
     }
-
-    public static function getGanadoresDiplomas($id){
-        
-    }
-
-    public static function getMensajes($id,$orderBy,$tipoOrden,$pag,$tamañoPag=5)
+    
+    /**
+     * getMensajes
+     * Consgio todos los mensajes del concurso por pag, ordenacion y tamaño
+     * @param  mixed $id
+     * @param  mixed $orderBy
+     * @param  mixed $tipoOrden
+     * @param  mixed $pag
+     * @param  mixed $tama
+     * @return void
+     */
+    public static function getMensajes($id,$orderBy,$tipoOrden,$pag,$tamañoPag=5):array
     {
         $limit=$tamañoPag;
         $offset=($pag-1)*$tamañoPag;
@@ -357,7 +500,16 @@ public static function getJueces($id){
             echo $e->getMessage();
         }  
     }
-    public static function getGandorModo($idModo,$idConcurso)
+
+        
+    /**
+     * getGandorModo
+     * Devuelve el ganador de un modo de un concurso
+     * @param  mixed $idModo
+     * @param  mixed $idConcurso
+     * @return array
+     */
+    public static function getGandorModo($idModo,$idConcurso):array
     {
 
         $sql="
@@ -386,8 +538,14 @@ public static function getJueces($id){
             echo $e->getMessage();
         }  
     }
-    
-    public static function getParticipantes($id)
+        
+    /**
+     * getParticipantes
+     * Consigo todos los participantes del concurso
+     * @param  mixed $id
+     * @return array
+     */
+    public static function getParticipantes($id):array
     {
         $sql="select participante.*, ST_X(localizacion) as x,  ST_Y(localizacion) as y, participacion.juez from participante join participacion on participante.id=participacion.participante_id where participacion.concurso_id=$id";
         try
@@ -410,8 +568,19 @@ public static function getJueces($id){
             echo $e->getMessage();
         }   
     }
-
-    public static function getMensajesParticipante($idParticipante, $idConcurso ,$orderBy,$tipoOrden,$pag,$tamañoPag=5)
+    
+    /**
+     * getMensajesParticipante
+     * Consigo los mensajes de un participante en un concurso
+     * @param  mixed $idParticipante
+     * @param  mixed $idConcurso
+     * @param  mixed $orderBy
+     * @param  mixed $tipoOrden
+     * @param  mixed $pag
+     * @param  mixed $tama
+     * @return array
+     */
+    public static function getMensajesParticipante($idParticipante, $idConcurso ,$orderBy,$tipoOrden,$pag,$tamañoPag=5):array
     {
         $limit=$tamañoPag;
         $offset=($pag-1)*$tamañoPag;
@@ -434,19 +603,13 @@ public static function getJueces($id){
             echo $e->getMessage();
         }   
     }
-
-    ////////////TO DO
-    public static function getGanadorModo($id)
-    {
-        
-    }
-
-    ////////////TO DO
-    public static function getGanadoresDiploma(){
-
-    }
-
-    public static function getUltimoActivo(){
+    
+    /**
+     * getUltimoActivo
+     * Consigue el ultino concurso creado
+     * @return Concurso
+     */
+    public static function getUltimoActivo():Concurso{
 
         $sql="SELECT * FROM concurso
         WHERE fini < now()
@@ -465,8 +628,13 @@ public static function getJueces($id){
             echo $e->getMessage();
         } 
     }
-
-    public static function getActivos(){
+    
+    /**
+     * getActivos
+     * Consigo loa concrusos activos
+     * @return array
+     */
+    public static function getActivos():array{
 
         $sql="SELECT * FROM concurso
         WHERE fini < now()
@@ -488,7 +656,13 @@ public static function getJueces($id){
         } 
     }
 
-    public static function getFinalizados(){
+        
+    /**
+     * getFinalizados
+     * Consigue los concursis finalizados
+     * @return array
+     */
+    public static function getFinalizados():array{
         $sql="SELECT * FROM concurso
         WHERE ffin < now()
         ORDER BY ffin desc";

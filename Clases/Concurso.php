@@ -21,7 +21,13 @@
             $this->setCartel($cartel);
         }
 
-
+                
+        /**
+         * arrayToConcurso
+         *Convierte un array en un objeto Concurso
+         * @param  mixed $array
+         * @return Concurso
+         */
         public static function arrayToConcurso(array $array): Concurso{
                 $id=$array['id'];
                 $nombre=$array['nombre'];
@@ -34,7 +40,12 @@
                 return new Concurso($id, $nombre, $descrip, $fIni, $fFin, $fIniInscrip, $fFinInscrip, $cartel);
         }
 
-
+        
+        /**
+         * concursoToArray
+         * Convierte un array en un Objeto Concurso
+         * @return void
+         */
         public function concursoToArray (){
                 $array['id']=$this->getId();
                 $array['nombre']=$this->getNombre();
