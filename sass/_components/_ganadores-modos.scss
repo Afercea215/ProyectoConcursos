@@ -1,0 +1,17 @@
+.c-ganadores-modos{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+
+    & div{
+        width: 100%;
+        background: $color-princip;
+        color: $color-sec;
+        padding: 5%;
+        text-align: center;
+        border-radius: getBorder(2);
+    }
+}

@@ -1,0 +1,68 @@
+@mixin pancarta(){
+    display: flex;
+    padding: 2%;
+    width: 30%;
+    margin: 0% 2%;
+    box-shadow: getShadow(2);
+    border-radius: getBorder(2);
+    text-align: center;
+    color: white;
+    min-height: 150px;
+
+    align-content: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.c-resultados{
+    margin-top: 5%;
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+
+    &__plata{
+        background: rgb(177, 177, 177);
+        @include pancarta();
+        color: white;
+        
+        & hr{
+            width: 100%;
+            margin-bottom: 5%;
+        }
+        
+        & h2{
+            color: white;
+        }
+    }
+    &__oro{
+        min-width: 35%;
+        background: rgb(255, 227, 157);
+        @include pancarta();
+        color: rgb(170, 144, 0);
+        min-height: 200px;
+        & hr{
+            width: 100%;
+        }
+        
+        & h2{
+            margin-bottom: 5%;
+            color: white;
+        }
+    }
+    &__bronce{
+        background: rgb(212, 176, 118);
+        @include pancarta();
+        color: rgb(123, 115, 66);
+        
+        & hr{
+            width: 100%;
+        }
+        & h2{
+            margin-bottom: 5%;
+            color: white;
+        }
+    }
+}

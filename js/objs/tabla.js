@@ -255,7 +255,7 @@ Tabla.prototype.creaBotonNuevo=function(obj=this){
     btn.innerHTML="+ Nuevo";
     btn.setAttribute('id', 'btnNuevo');
     btn.className="c-boton";
-    btn.onclick=imprimeFormularioNuevo(obj.nombreColumBd, obj.tipoDato);
+    btn.onclick=imprimeFormularioNuevo(obj.nombreColumBd, obj.tipoDato, obj);
     
     if (obj.subidaMasiva) {
         let btnMasiva = document.createElement('span');
@@ -524,7 +524,7 @@ function editaFila(tipoDato, fila, nombreColumBd,obj) {
     }
 }
 
-function imprimeFormularioNuevo(nombreColumnas, tipoDato){
+function imprimeFormularioNuevo(nombreColumnas, tipoDato, obj){
     return function () {
         let form = creaFormNuevo(nombreColumnas);
         form.submit.onclick=async function (ev) { 
@@ -549,11 +549,12 @@ function imprimeFormularioNuevo(nombreColumnas, tipoDato){
                         img = await toBase64(file);
                     }else{
                         let imgActual = document.getElementById("imgActual");
-                        img=imgActual.src;
+                        img="";
                     }
                     data.append(nombreColumnas[i],img);
                 }else if (nombreColumnas[i]=='localizacion') {
                     data.append('X',form[i].value);
+                    debugger
                     data.append('Y',form[i+1].value);
                     i++;
                 } else {
@@ -630,68 +631,68 @@ function creaFormNuevo(nombreColumnas){
     form.appendChild(divTitulo);
 
     for (let i = 0; i < nombreColumnas.length; i++) {
-        if (nombreColumnas[i]!='id') {
+
+        debugger
+        let div = document.createElement("div");
+        let label = document.createElement("label");
+        label.innerHTML=capitalizeFirstLetter(nombreColumnas[i]);
+        
+        label.setAttribute("for",nombreColumnas[i]);
+        let input = document.createElement("input");
+        input.setAttribute("name",nombreColumnas[i]);
+
+        let textImg;
+        let img;
+
+        //si es localizacion
+        let x;
+        let y;
+        let labelX;
+        let labely;
+        if (nombreColumnas[i]=='localizacion') {
+            labelX = document.createElement("label"); 
+            labelX.setAttribute("for","x");
+            labelX.innerHTML="X";
+            x = document.createElement("input");
+            x.setAttribute("name","x");
+            x.setAttribute("type","number");
             
-            let div = document.createElement("div");
-            let label = document.createElement("label");
-            label.innerHTML=capitalizeFirstLetter(nombreColumnas[i]);
-            
-            label.setAttribute("for",nombreColumnas[i]);
-            let input = document.createElement("input");
-            input.setAttribute("name",nombreColumnas[i]);
-    
-            let textImg;
-            let img;
-    
-            //si es localizacion
-            let x;
-            let y;
-            let labelX;
-            let labely;
-            if (nombreColumnas[i]=='localizacion') {
-                labelX = document.createElement("label"); 
-                labelX.setAttribute("for","x");
-                labelX.innerHTML="X";
-                x = document.createElement("input");
-                x.setAttribute("name","x");
-                x.setAttribute("type","number");
-                
-                labely = document.createElement("label"); 
-                labely.setAttribute("for","y");
-                labely.innerHTML="Y";
-                y = document.createElement("input");
-                y.setAttribute("type","number");
-                y.setAttribute("name","y");
-    
-            }else if (nombreColumnas[i]=="imagen") {
-                //si es imgaen creo la inmagen con el input fil
-                input.setAttribute("type","file");
-    
-            }else if (nombreColumnas[i]=='admin') {
-                input.setAttribute("type","checkbox");
-            }else{
-                input.setAttribute("type","text");
-            }
-    
-            //compruebo si es id y lo descativo
-            if (nombreColumnas[i]=='id') {
-                input.disabled=true;
-            }
-    
-            //dependiendo si hay img o localizacion no inserto una u otra
-            if (img !== undefined) {
-                div.className="c-form__componente--imagen";
-                div.append(label,img,input);
-            }else if (x !== undefined && y !== undefined) {
-                div.className="c-form__componente";
-                div.append(label,labelX,x,labely,y);
-            }else{
-                div.className="c-form__componente";
-                div.append(label,input);
-            }
-            
-            form.append(div);
+            labely = document.createElement("label"); 
+            labely.setAttribute("for","y");
+            labely.innerHTML="Y";
+            y = document.createElement("input");
+            y.setAttribute("type","number");
+            y.setAttribute("name","y");
+
+        }else if (nombreColumnas[i]=="imagen") {
+            //si es imgaen creo la inmagen con el input fil
+            input.setAttribute("type","file");
+
+        }else if (nombreColumnas[i]=='admin') {
+            input.setAttribute("type","checkbox");
+        }else{
+            input.setAttribute("type","text");
         }
+
+        //compruebo si es id y lo descativo
+        if (nombreColumnas[i]=='id') {
+            input.disabled=true;
+        }
+
+        //dependiendo si hay img o localizacion no inserto una u otra
+        if (img !== undefined) {
+            div.className="c-form__componente--imagen";
+            div.append(label,img,input);
+        }else if (x !== undefined && y !== undefined) {
+            div.className="c-form__componente";
+            div.append(label,labelX,x,labely,y);
+        }else{
+            div.className="c-form__componente";
+            div.append(label,input);
+        }
+        
+        form.append(div);
+        
     }
     div = document.createElement("div");
     let btn = document.createElement("button");

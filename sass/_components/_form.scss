@@ -10,9 +10,6 @@
 
     border-radius: $border-1+px;
     
-    position: absolute;
-    z-index: 100;
-
     padding-right: 4%;
     padding-left: 4%;
     
@@ -33,6 +30,11 @@
         
         color: $color-sec;
         margin-bottom: 3%;
+        & video{
+            width: 500px;
+            height: 300px;
+        }
+
         & hr{
             width: 100%;
             color: $color-sec;
@@ -99,6 +101,11 @@
     &--edicion{
         transition: height 1s ease-in 0s;
         @include form;
+
+        position: absolute;
+        top: 100px;
+        z-index: 100;
+    
         flex-direction: row;
         flex-wrap: wrap;
         max-width: 40%;
@@ -282,6 +289,10 @@
     justify-content: center;
     align-items: center;
     height: 300px;
+
+    position: absolute;
+    top: 100px;
+    z-index: 150;
 
     & span{
         & img{

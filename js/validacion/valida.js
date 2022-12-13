@@ -4,7 +4,8 @@ HTMLFormElement.prototype.valida=function () {
     let valido = true;
     
     const regText = new RegExp(/^[A-Za-z]*$/);
-    const regNum = new RegExp(/^[0-9]*$/);
+    const regNum = new RegExp(/^([0-9]*[\,]?)*$/);
+    const regIden = new RegExp(/^[A-Z]{2}[0-9][A-Z]{3}$/);
     const regMail = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
     const regImg = new RegExp(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/);
     const regCsv = new RegExp(/([a-zñA-ZÑ0-9\s_\\.\-\(\):])+(.csv)$/i);
@@ -38,6 +39,16 @@ HTMLFormElement.prototype.valida=function () {
         }
         if (clases.contains('val_num')) {
             valido = regNum.test(input.value)?true:false;
+            if (!valido) {
+                let text = input.previousElementSibling.innerHtml;
+                input.classList.add("errorInput");
+                document.body.appendChild(getPanelError('Error', 'El campo marcado solo debe ser numerico'));
+                return false;
+            }else{
+                input.classList.remove("errorInput");
+            }
+        if (clases.contains('val_identificador')) {
+            valido = regIden.test(input.value)?true:false;
             if (!valido) {
                 let text = input.previousElementSibling.innerHtml;
                 input.classList.add("errorInput");
@@ -81,8 +92,9 @@ HTMLFormElement.prototype.valida=function () {
             }
         }
         
-    }
+        }
     return true;
+    }
 }
 
     for (let i = 0; i < document.forms.length; i++) {
@@ -108,7 +120,6 @@ HTMLFormElement.prototype.valida=function () {
             }
         }
     }
-
 
 /* function validaForm() {
 this.onsubmit

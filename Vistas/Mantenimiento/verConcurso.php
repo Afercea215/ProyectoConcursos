@@ -288,7 +288,9 @@
                     }
                     //si es juez del este concurso y receptor de ese mensaje y mensaje no valido
                     if (Sesion::estaLogeado() && RepositorioParticipante::esJuez(Sesion::leer('usuario')->getId(),$_GET['id']) && $receptor->getId()==Sesion::leer('usuario')->getId() && !$qsos[$i]['qso']->getValido()) {
-                        echo '<td><a href="./controladores/aprobarMensaje.php?id='.$qsos[$i]['qso']->getId().'&idConcurso='.$concurso->getId().'"><img src="../../img/aprobar.png"></a>';
+                        echo '<td><a href="./controladores/aprobarMensaje.php?id='.$qsos[$i]['qso']->getId().'&idConcurso='.$concurso->getId().'"><img src="../../img/martillo.png"></a>';
+                    }else if($qsos[$i]['qso']->getValido()){
+                        echo '<td><img src="../../img/aprobar.png"></td>';
                     }
                     //echo '<td><a href="./?menu=verConcurso&id='.$bandas[$i]->getId().'"><img src="../../img/iconoOjo.png"></a>';
                     //echo '<td><a href="./?menu=listadoConcursos&accion=edita&id='.$bandas[$i]->getId().'"><img src="../../img/iconoLapiz.png"></a>';

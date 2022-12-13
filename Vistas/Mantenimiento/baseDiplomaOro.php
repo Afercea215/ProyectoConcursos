@@ -15,6 +15,7 @@
     </style>
 </head>
 <body>
+    <h1><?php $_GET['idParticipante']?></h1>
     <h1>Diploma Ganador Oro</h1>
     <p>EnhoraBuena por haber ganado tu diploma</p>
 </body>

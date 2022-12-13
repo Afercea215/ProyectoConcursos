@@ -88,6 +88,13 @@ class Validacion
         }
     }
 
+    public function existeEmail($campo, $valor){
+        if ($this->Email($campo)) {
+            if (!RepositorioParticipante::getByCorreo($valor)) {
+                $this->errores[$campo]="Correo electronico incorrecto, no existe ningun usuario con este correo.";
+            };
+        };
+    }
     public function validaEmail($campo, $valor){
         if ($this->Email($campo)) {
             if (RepositorioParticipante::getByCorreo($valor)) {

@@ -35,15 +35,18 @@
     <div class="c-header__indentificacion">
         <?php
          if (!Sesion::estaLogeado()) {
-            echo '<a href="./?menu=login" id="login">Login</a>    
-                  <a href="./?menu=registro" class="c-boton c-boton--secundario">Registrarse</a>';    
-         }else{
+             echo '<a href="./?menu=login" id="login">Login</a>    
+             <a href="./?menu=registro" class="c-boton c-boton--secundario">Registrarse</a>';    
+        }else{
+             $nombre = Sesion::leer('usuario')->getNombre();
             echo "<div class='c-header__indentificacion__logo-usuario'>
                     <div class='c-menu-desplegable'>
                         <img src='".Sesion::leer('usuario')->getImagen()."' class='logo' alt=''>
                         <span id='desplegable' class='btnDesplegable'>▼</span>
 
                         <div class='c-menu-desplegable__contenido' id='contenido-menu'>
+                            <a href=''>$nombre<a>
+                            <hr>
                             <a href='./?menu=datosPersonales'>Datos Personales</a>
                             <a href='./?menu=cerrarsesion'>Cerrar Sesion</a>
                         </div>

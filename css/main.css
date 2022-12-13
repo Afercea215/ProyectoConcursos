@@ -1156,8 +1156,6 @@ h3 {
   color: #F1F1F1;
   background-color: #3BB0C0;
   border-radius: 14px;
-  position: absolute;
-  z-index: 100;
   padding-right: 4%;
   padding-left: 4%;
   min-height: 200px;
@@ -1172,6 +1170,10 @@ h3 {
   width: 100%;
   color: #F1F1F1;
   margin-bottom: 3%;
+}
+.c-form__titulo video {
+  width: 500px;
+  height: 300px;
 }
 .c-form__titulo hr {
   width: 100%;
@@ -1236,12 +1238,13 @@ h3 {
   color: #F1F1F1;
   background-color: #3BB0C0;
   border-radius: 14px;
-  position: absolute;
-  z-index: 100;
   padding-right: 4%;
   padding-left: 4%;
   min-height: 200px;
   min-width: 300px;
+  position: absolute;
+  top: 100px;
+  z-index: 100;
   flex-direction: row;
   flex-wrap: wrap;
   max-width: 40%;
@@ -1373,8 +1376,6 @@ h3 {
   color: #F1F1F1;
   background-color: #3BB0C0;
   border-radius: 14px;
-  position: absolute;
-  z-index: 100;
   padding-right: 4%;
   padding-left: 4%;
   min-height: 200px;
@@ -1433,6 +1434,9 @@ h3 {
   justify-content: center;
   align-items: center;
   height: 300px;
+  position: absolute;
+  top: 100px;
+  z-index: 150;
 }
 .c-form--asignacion span img {
   position: absolute;
@@ -1605,12 +1609,17 @@ h3 {
   align-items: center;
   justify-content: space-evenly;
 }
-.c-panel--error img {
+.c-panel--error span {
+  width: 30px;
+  height: 30px;
+}
+.c-panel--error span img {
   position: absolute;
   top: 10px;
   right: 15px;
   z-index: 200;
   width: 30px;
+  height: 30px;
 }
 .c-panel--error h2 {
   color: rgb(239, 239, 239);
@@ -1817,4 +1826,104 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.c-resultados {
+  margin-top: 5%;
+  width: 90%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+.c-resultados__plata {
+  background: rgb(177, 177, 177);
+  display: flex;
+  padding: 2%;
+  width: 30%;
+  margin: 0% 2%;
+  box-shadow: 0 6px 12px hsla(0deg, 0%, 0%, 0.13);
+  border-radius: 14px;
+  text-align: center;
+  color: white;
+  min-height: 150px;
+  align-content: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.c-resultados__plata hr {
+  width: 100%;
+  margin-bottom: 5%;
+}
+.c-resultados__plata h2 {
+  color: white;
+}
+.c-resultados__oro {
+  min-width: 35%;
+  background: rgb(255, 227, 157);
+  display: flex;
+  padding: 2%;
+  width: 30%;
+  margin: 0% 2%;
+  box-shadow: 0 6px 12px hsla(0deg, 0%, 0%, 0.13);
+  border-radius: 14px;
+  text-align: center;
+  color: white;
+  min-height: 150px;
+  align-content: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: rgb(170, 144, 0);
+  min-height: 200px;
+}
+.c-resultados__oro hr {
+  width: 100%;
+}
+.c-resultados__oro h2 {
+  margin-bottom: 5%;
+  color: white;
+}
+.c-resultados__bronce {
+  background: rgb(212, 176, 118);
+  display: flex;
+  padding: 2%;
+  width: 30%;
+  margin: 0% 2%;
+  box-shadow: 0 6px 12px hsla(0deg, 0%, 0%, 0.13);
+  border-radius: 14px;
+  text-align: center;
+  color: white;
+  min-height: 150px;
+  align-content: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: rgb(123, 115, 66);
+}
+.c-resultados__bronce hr {
+  width: 100%;
+}
+.c-resultados__bronce h2 {
+  margin-bottom: 5%;
+  color: white;
+}
+
+.c-ganadores-modos {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
+.c-ganadores-modos div {
+  width: 100%;
+  background: #3BB0C0;
+  color: #F1F1F1;
+  padding: 5%;
+  text-align: center;
+  border-radius: 14px;
 }/*# sourceMappingURL=main.css.map */

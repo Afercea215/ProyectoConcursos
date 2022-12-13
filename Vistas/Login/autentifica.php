@@ -7,7 +7,7 @@
         $valida->Requerido('contrasena');
         //Comprobamos validacion
         $recuerdame =isset($_POST['recuerdame'])?true:false;
-        $participante = Login::Identifica($_POST['usuario'],$_POST['contrasena'],$recuerdame);
+        $participante = Login::Identifica($_POST['usuario'],GBD::encriptaContrasena($_POST['contrasena']),$recuerdame);
         if($valida->ValidacionPasada() && $participante)
         {
             Sesion::iniciaSesion($participante,$recuerdame);
@@ -35,5 +35,5 @@
             <span>Recuerdame</span>
         </div>
 
-        <span>He olvidado mi contraseña</span>
+        <a href="./?menu=restableceContrasena"><span>He olvidado mi contraseña</span></a>
 </form>

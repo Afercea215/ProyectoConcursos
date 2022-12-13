@@ -42,5 +42,8 @@ if (isset($_GET['menu'])) {
     if ($_GET['menu'] == "resultados") {
         require_once './Vistas/Mantenimiento/resultado.php';
     }
+    if ($_GET['menu'] == "restableceContrasena") {
+        require_once './Vistas/Mantenimiento/restableceContrasena.php';
+    }
 }
     //Añadir otras rutas

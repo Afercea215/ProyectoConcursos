@@ -60,7 +60,7 @@
     <?= $valida->ImprimirError('email') ?>
     
     <p>Identificador</p>
-    <input type='text' class='<?php $valida->imprimeClaseInputError('identificador')?> val_required val_text' name='identificador' placeholder='Identificador' value='<?php if (isset($_POST['usuario'])){
+    <input type='text' class='<?php $valida->imprimeClaseInputError('identificador')?> val_required val_identificador' name='identificador' placeholder='Identificador' value='<?php if (isset($_POST['usuario'])){
         echo $_POST['identificador'];
         } ?>'>
     <?= $valida->ImprimirError('identificador') ?>

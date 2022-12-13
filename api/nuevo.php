@@ -19,26 +19,35 @@
                     }
 
                     //GBD::update($_GET['tipo'],$_POST);
-                    $sql="update ".$_GET['tipo']." set ";
-                    $condicion=" where id=".$_POST['id'];
+                    $sql="insert into ".$_GET['tipo']."(";
+
                     $keys=array_keys($_POST);
-
-                    for ($i=0; $i < sizeof($keys) ; $i++) { 
-                        if ($keys[$i]!='id') {
-                            //si es la ultima linea no pongo coma, si si lo es la pongo
-                            if ($i==sizeof($keys)-1) {
-                                if ($keys[$i]=='admin' || $keys[$i]=='localizacion') {
-                                    $sql.=$keys[$i]."= ".$_POST[$keys[$i]]." ";
-                                }else{
-                                    $sql.=$keys[$i]."= '".$_POST[$keys[$i]]."' ";
-                                }
+                    for ($i=0; $i <sizeof($_POST) ; $i++) { 
+                        if ($i!=sizeof($_POST)-1) {
+                            $sql.=$keys[$i].",";
+                        }else{
+                            $sql.=$keys[$i].")";
+                        }
+                    }
+                    $sql.=" values (";
+                    for ($i=0; $i <sizeof($_POST) ; $i++) { 
+                        if ($i!=sizeof($_POST)-1) {
+                            if ($keys[$i]=='distancia' || $keys[$i]=='rangoMax' || $keys[$i]=='rangoMin') {
+                                $sql.=$_POST[$keys[$i]].", ";
+                            }else if ($keys[$i]=='id' || $keys[$i]=='Id') {
+                                $sql.="null,";
+                            }else if ($keys[$i]=='localizacion') {
+                                $sql.=$_POST[$keys[$i]].",";
+                            }else{  
+                                $sql.="'".$_POST[$keys[$i]]."',";
+                            }
+                        }else{
+                            if ($keys[$i]=='distancia' || $keys[$i]=='rangoMax' || $keys[$i]=='rangoMax') {
+                                $sql.=$_POST[$keys[$i]].")";
+                            }else if ($keys[$i]=='localizacion') {
+                                $sql.=$_POST[$keys[$i]].")";
                             }else{
-                                if ($keys[$i]=='admin' || $keys[$i]=='localizacion') {
-
-                                    $sql.=$keys[$i]."= ".$_POST[$keys[$i]].", ";
-                                }else{
-                                    $sql.=$keys[$i]."= '".$_POST[$keys[$i]]."', ";
-                                }
+                                $sql.="'".$_POST[$keys[$i]]."')";
                             }
                         }
                     }

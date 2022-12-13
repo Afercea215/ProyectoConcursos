@@ -20,6 +20,8 @@ window.onload=function () {
 
                 selectUsuarios.appendChild(option);
             }
+            debugger
+            selectParticipantes.style.display="block";
             divModal.appendChild(selectUsuarios);
 
             //caja botones
@@ -100,6 +102,7 @@ window.onload=function () {
                 let selectJueces = document.createElement('select')
                 selectJueces.setAttribute('multiple',"");
                 
+                selectJueces.style.display="block";
                 for (let i = 0; i < options.length; i++) {
                     let option = document.createElement('option')
                     option.setAttribute('value',options[i].value)
@@ -107,6 +110,7 @@ window.onload=function () {
     
                     selectUsuarios.appendChild(option);
                 }
+                
                 divModal.appendChild(selectUsuarios);
     
                 //caja botones

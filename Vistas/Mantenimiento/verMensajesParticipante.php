@@ -32,7 +32,7 @@ if (Sesion::estaLogeado()) {
     $edicionActiva;
     //si hay info en post para validar
     if (isset($_POST['submit']) && isset($_GET['accion'])) {
-        $validacion->Requerido('fecha');
+        //$validacion->Requerido('fecha');
        /*  $validacion->Requerido('banda');
         $validacion->Requerido('modo');
         $validacion->Requerido('emisor');
@@ -50,6 +50,7 @@ if (Sesion::estaLogeado()) {
             if ($_GET['accion']=='edita') {
                 //envio la id tb
                 $_POST['id']=$_GET['idMensaje'];
+                $_POST['fecha']=(new DateTime())->format('Y-m-d H:i:s');
                 $participacion = RepositorioParticipacion::getByConcursoParticipante($_GET['idConcurso'],$_GET['idParticipante']);
                 $_POST['participacion_id']=$participacion->getId();
                 try {
@@ -59,6 +60,8 @@ if (Sesion::estaLogeado()) {
                     echo "a";
                 }
             }else if ($_GET['accion']=='nuevo') {
+                $_POST['id']=$_GET['idMensaje'];
+                $_POST['fecha']=(new DateTime())->format('Y-m-d H:i:s');
                 $participacion = RepositorioParticipacion::getByConcursoParticipante($_GET['idConcurso'],$_GET['idParticipante']);
                 $_POST['participacion_id']=$participacion->getId();
                 $qso=Qso::arrayToQso($_POST);
@@ -150,11 +153,7 @@ if (Sesion::leer('usuario')->getId()==$emisor->getId()) {
         <hr>
         </div>
         
-        <div class="c-form__componente">
-            <label for="fecha">Fecha</label>
-            <input type="datetime-local" class="'.(($validacion!=null)?$validacion->imprimeClaseInputError('fecha'):"").'" name="fecha" value="'.(($_POST['fecha'])??$mensaje->getFecha()->format('Y-m-d H:i:s')).'">
-            '.(($validacion!=null)?$validacion->ImprimirError('fecha'):"").'
-        </div>
+
         <div class="c-form__componente">
             <label for="modo_id">Modos</label>
             <select id="selecionaModos" name="modo_id">';
@@ -196,26 +195,7 @@ echo '<div class="c-form__componente">
         echo'</select>
         </div>';
         //EMISOR
-    echo '<div class="c-form__componente">
-            <label for="emisor_id">Emisor</label>
-            <select id="selecionaEmisor" name="emisor_id">';
-                $participantes = RepositorioConcurso::getParticipantes($idConcurso);
-                $emisor = RepositorioQso::getEmisor($mensaje->getId());
-
-                for ($i=0; $i < sizeof($participantes); $i++) { 
-                    $selected=false;
-                    
-                    if ($participantes[$i]['participante']->getId()==$emisor->getId()) {
-                        echo '<option selected value="'.$participantes[$i]['participante']->getId().'">'.$participantes[$i]['participante']->getNombre().'</option>';
-                        $selected=true;
-                    }
-                    
-                    if (!$selected) {
-                        echo '<option value="'.$participantes[$i]['participante']->getId().'">'.$participantes[$i]['participante']->getNombre().'</option>';
-                    }
-                }
-        echo'</select>
-        </div>';
+    
         //RECEPTOR
     echo '<div class="c-form__componente">
             <label for="receptor_id">Receptor</label>
@@ -259,11 +239,6 @@ echo '<div class="c-form__componente">
         </div>
         
         <div class="c-form__componente">
-            <label for="fecha">Fecha</label>
-            <input type="datetime-local" class="'.(($validacion!=null)?$validacion->imprimeClaseInputError('fecha'):"").'" name="fecha" value="'.($_POST['fecha']??"").'">
-            '.(($validacion!=null)?$validacion->ImprimirError('fecha'):"").'
-        </div>
-        <div class="c-form__componente">
             <label for="modo_id">Modos</label>
             <select id="selecionaModos" name="modo_id">';
                 $modosSeleccionado = isset($_POST['modo_id'])?$_POST['modo_id']:"";
@@ -301,26 +276,7 @@ echo '<div class="c-form__componente">
         echo'</select>
         </div>';
         //EMISOR
-    echo '<div class="c-form__componente">
-            <label for="emisor_id">Emisor</label>
-            <select id="selecionaEmisor" name="emisor_id">';
-                $participantes = RepositorioConcurso::getParticipantes($idConcurso);
-                $emisor = $_POST['emisor_id']??null;
-
-                for ($i=0; $i < sizeof($participantes); $i++) { 
-                    $selected=false;
-                    
-                    if ($participantes[$i]['participante']->getNombre()==$emisor) {
-                        echo '<option selected value="'.$participantes[$i]['participante']->getId().'">'.$participantes[$i]['participante']->getNombre().'</option>';
-                        $selected=true;
-                    }
-                    
-                    if (!$selected) {
-                        echo '<option value="'.$participantes[$i]['participante']->getId().'">'.$participantes[$i]['participante']->getNombre().'</option>';
-                    }
-                }
-        echo'</select>
-        </div>';
+ 
         //RECEPTOR
     echo '<div class="c-form__componente">
             <label for="receptor_id">Receptor</label>

@@ -12,6 +12,45 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
     $validacion = new Validacion();
     //si hay info en post para validar
 
+    if (isset($_GET['accion']) && $_GET['accion']=='masiva') {
+                
+        if (!empty($_FILES) && $_FILES['csv']['type']=="text/csv") {
+            $path = $_FILES['csv']['tmp_name'];
+            $gestor = fopen($path, "r");
+            $i = 0;
+            $j=0;
+            $fila=[];
+            while ($dato = fgetcsv($gestor, 1000, ";")) {
+                $datos[$i]=$dato;
+                $i++;
+            }
+            imprimeFormMasiva($datos);
+
+         fclose($gestor);
+
+        }else{
+            imprimeMasivo();
+        }
+
+        if (isset($_POST['nombre']) && isset($_POST['descrip']) && isset($_POST['fini'])) {
+            for ($i=0; $i <sizeof($_POST['nombre']) ; $i++) { 
+                $array['id']=1;
+                $array['nombre']=$_POST['nombre'][$i];
+                $array['descrip']=$_POST['descrip'][$i];
+                $array['fini']=$_POST['fini'][$i]; 
+                $array['ffin']=$_POST['ffin'][$i];
+                $array['finiInscrip']=$_POST['finiInscrip'][$i];
+                $array['ffinInscrip']=$_POST['ffinInscrip'][$i];
+                $array['cartel']="./img/cartelDefault.png";
+                $concurso = Concurso::arrayToConcurso($array);
+
+                RepositorioConcurso::add($concurso);
+            }
+            header('location:./?menu=listadoConcursos');
+        }
+    }
+
+
     //si quiere borrar un cocurso
     if (isset($_GET['accion']) && $_GET['accion']=='borra'){
         echo '
@@ -41,7 +80,16 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
         $validacion->Requerido('participantes_id');
         $validacion->Requerido('jueces_id');
         
-        
+        $fini = new DateTime($_POST['fini']);
+        $ffin = new DateTime($_POST['ffin']);
+        $finiInscrip = new DateTime($_POST['finiInscrip']);
+        $ffinInscrip = new DateTime($_POST['ffinInscrip']);
+        if ($fini > $ffin) {
+            $validacion->addError('ffin','La fecha de inicio debe de ser menos a la fecha de fin');
+        }
+        if ($finiInscrip > $ffinInscrip) {
+            $validacion->addError('ffinInscrip','La fecha de inicio debe de ser menos a la fecha de fin');
+        }
         //si no se valida se imprimen los datos con errores
         if (!$validacion->ValidacionPasada()) {
             if ($_GET['accion']=='edita') {
@@ -219,7 +267,7 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
 ?>
 <div class="c-nuevo">
     <a href="./?menu=listadoConcursos&accion=nuevo"><span class="c-boton">+ Nuevo</span></a>
-    <a href="./?menu=listadoConcursos&accion=subidaMasiva"><span class="c-boton">+ Subida Masiva</span></a>
+    <a href="./?menu=listadoConcursos&accion=masiva"><span class="c-boton">+ Subida Masiva</span></a>
 </div>
 <table class="c-tabla">
     <thead>
@@ -262,7 +310,7 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
     $maxPag = intval(sizeof($concursos)/5+1);
     $pagAnterior = $pag<=1?1:$pag-1;
     $pagSiguiente = $pag>=$maxPag?$maxPag:$pag+1;
- b      echo '<div class="c-paginacion">';
+    echo '<div class="c-paginacion">';
     echo '<span class="c-paginacion__noactual"><a href="./?menu=listadoConcursos&OrderBy=$orderBy&pag='.$pagAnterior.'"><</a></span>';
     echo '<span class="c-paginacion__actual">'.$pag.'</span>';
     echo '<span class="c-paginacion__noactual"><a href="./?menu=listadoConcursos&OrderBy=$orderBy&pag='.$pagSiguiente.'">></a></span>';
@@ -515,13 +563,13 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
         echo '<div class="c-form__componente" id="cajaParticipantes">
                 <label>Participantes</label>
                 <span class="c-boton c-boton--secundario" id="btnAsignaParticip">Asignar Participantes</span>
-                <select id="selectParticipantes" multiple="" name="participantes_id[]" style="display:none"></select>
+                <select id="selectParticipantes" multiple="" name="participantes_id[]"></select>
              </div>';
              
         echo '<div class="c-form__componente" id="cajaJueces">
                 <label>Jueces</label>
                 <span class="c-boton c-boton--secundario" id="btnAsignaJueces">Asignar Jueces</span>
-                <select id="selectJueces" multiple="" name="jueces_id[]" style="display:none"></select>
+                <select id="selectJueces" multiple="" name="jueces_id[]"></select>
             </div>';
 
         echo'
@@ -532,6 +580,59 @@ if (Sesion::estaLogeado() && Sesion::esAdmin()) {
     
         </form>
     <div class="bgModal"></div>';
+
+    }
+    function imprimeMasivo(){
+        echo '<form class="c-form--edicion animZoom" method="post" action="./?menu=listadoConcursos&accion=masiva" enctype="multipart/form-data">
+                <span class="btnSalir">
+                    <a href="./?menu=listadoConcursos">
+                    <img src="../../img/x.webp" alt=""></a>
+                </span>        
+                <label class="c-form__titulo">Adjunta tu csv</label>
+                <input type="file" name="csv">
+                <div class="c-form__footer">
+                    <hr>
+                    <button value="Guardar" name="submit" class="c-boton c-boton--secundario">Procesar datos</button>
+                </div>
+              </form>
+        <div class="bgModal"></div>';
+
+    }
+    function imprimeFormMasiva($datos){
+        echo '<div class="c-form c-form--masivo animZoom" style="position: absolute; z-index: 100;">
+                <span class="btnSalir">
+                    <a href="./?menu=listadoConcursos">
+                    <img src="../../img/x.webp" alt=""></a>
+                </span>
+                <div class="c-form__titulo"><h2 style="margin-bottom: 4%; margin-top: 4%;">Importación Masiva</h2><hr></div>
+                <form class="c-form--edicion animZoom" method="post" action="./?menu=listadoConcursos&accion=masiva" enctype="multipart/form-data">';
+                
+                for ($i=1; $i <sizeof($datos) ; $i++) { 
+                    echo '<div>';
+                    echo '<label for="'.$datos[0][1].'[]">'.$datos[0][1].'</label>';
+                    echo '<input type="text" name="'.$datos[0][1].'[]" value="'.$datos[$i][1].'">';
+
+                    echo '<label for="'.$datos[0][2].'[]">'.$datos[0][2].'</label>';
+                    echo '<input type="text" name="'.$datos[0][2].'[]" value="'.$datos[$i][2].'">';
+
+                    echo '<label for="'.$datos[0][3].'[]">'.$datos[0][3].'</label>';
+                    echo '<input type="text" name="'.$datos[0][3].'[]" value="'.$datos[$i][3].'">';
+
+                    echo '<label for="'.$datos[0][4].'[]">'.$datos[0][4].'</label>';
+                    echo '<input type="text" name="'.$datos[0][4].'[]" value="'.$datos[$i][4].'">';
+                    
+                    echo '<label for="'.$datos[0][5].'[]">'.$datos[0][5].'</label>';
+                    echo '<input type="text" name="'.$datos[0][5].'[]" value="'.$datos[$i][5].'">';
+
+                    echo '<label for="'.$datos[0][6].'[]">'.$datos[0][6].'</label>';
+                    echo '<input type="text" name="'.$datos[0][6].'[]" value="'.$datos[$i][6].'">';
+                    echo '</div>';
+                }
+
+                echo '<button value="Crear" name="submit" class="c-boton c-boton--secundario" style="margin-top: 7%;">Crear</button>';
+            echo '</form>
+              </div>
+        <div class="bgModal"></div>';
 
     }
 ?>

@@ -18,6 +18,10 @@ class GBD
         }
     } */
 
+    public static function encriptaContrasena($contrasena){
+       return hash('md5',$contrasena, false);
+    } 
+
     /**
      * Devuelve la conexión
      *

@@ -69,6 +69,7 @@ if (Sesion::estaLogeado()) {
 <div id="resultados" class="c-resultados">
     <div class="c-resultados__plata">
         <h2>Ganadores Diploma de plata</h2>
+        <hr>
         <?php
             for ($i=0; $i < sizeof($ganadoresPlata); $i++) { 
                 echo '<p>'.$ganadoresPlata[$i]->getNombre().'</p>';
@@ -77,6 +78,7 @@ if (Sesion::estaLogeado()) {
     </div>
     <div class="c-resultados__oro">
         <h2>Ganadores Diploma de oro</h2>
+        <hr>
         <?php
             for ($i=0; $i < sizeof($ganadoresOro); $i++) { 
                 echo '<p>'.$ganadoresOro[$i]->getNombre().'</p>';
@@ -84,7 +86,8 @@ if (Sesion::estaLogeado()) {
         ?>
     </div>
     <div class="c-resultados__bronce">
-        <h2>Ganadores Diploma de oro</h2>
+        <h2>Ganadores Diploma de bronce</h2>
+        <hr>
         <?php
             for ($i=0; $i < sizeof($ganadoresBronce); $i++) { 
                 echo '<p>'.$ganadoresBronce[$i]->getNombre().'</p>';
@@ -108,6 +111,7 @@ if (Sesion::estaLogeado()) {
             $ganador = RepositorioParticipante::getById($idGanador);
             echo '<div>
                     <h3>Ganador del Modo '.$modos[$i]['nombre'].'</h3>
+                    <hr>
                     <p>'.$ganador->getNombre().'</p>
                 </div>';
 
